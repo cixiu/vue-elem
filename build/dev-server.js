@@ -11,6 +11,7 @@ var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
+var axios = require('axios')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -21,6 +22,26 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+// 服务端代理请求url
+var apiRouter = express.Router()
+
+apiRouter.get('/getEntries', function (req, res) {
+  var url = 'https://mainsite-restapi.ele.me/shopping/v2/entries';
+  axios.get(url, {
+    headers: {
+      referer: 'https://h5.ele.me/msite/',
+      host: 'mainsite-restapi.ele.me'
+    },
+    params: req.query
+  }).then((response) => {
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
+app.use('/api', apiRouter)
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {

@@ -23,11 +23,9 @@ module.exports = {
     'generator-star-spacing': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    // require semicolons always
     "semi": ["error", "always"],
-    // Require a space before function parenthesis 
-    "space-before-function-paren": ["error", "always"],
-    // require newline at the end of files
-    "eol-last": ["error", "always"]
+    "indent": 0,
+    "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+    "no-tabs": "off"
   }
 }

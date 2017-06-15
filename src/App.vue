@@ -1,23 +1,40 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <m-header></m-header>
+    <tab></tab>
+    <split></split>
+    <div class="recommend">
+      <h1 class="recommend-shopper border-1px">推荐商家</h1>
+      <shopper></shopper>
+    </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'app'
-}
+<script  type="text/ecmascript-6">
+  import MHeader from 'components/m-header/m-header';
+  import Tab from 'components/tab/tab';
+  import Split from 'base/split/split';
+  import Shopper from 'components/shopper/shopper';
+
+  export default {
+    components: {
+      MHeader,
+      Tab,
+      Split,
+      Shopper
+    }
+  };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus" ref="stylesheet/stylus">
+  @import './common/stylus/mixin.styl'
+  
+  .recommend
+    .recommend-shopper
+      padding-left: 15px
+      line-height: 34px
+      font-size: 16px
+      font-weight: 600
+      background: #fff;
+      border-1px(#eee)
 </style>
