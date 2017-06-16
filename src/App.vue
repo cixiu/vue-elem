@@ -1,12 +1,23 @@
 <template>
   <div id="app">
-    <m-header></m-header>
-    <tab></tab>
-    <split></split>
-    <div class="recommend">
-      <h1 class="recommend-shopper border-1px">推荐商家</h1>
-      <shopper></shopper>
-    </div>
+    <scroll 
+            class="app-content" 
+            :data="shoppers" 
+            ref="scroll" 
+            :pullup="pullup"
+            @scrollToEnd="getShopperMoreList"
+    >
+      <div>
+        <m-header></m-header>
+        <tab></tab>
+        <split></split>
+        <div class="recommend">
+          <h1 class="recommend-shopper border-1px">推荐商家</h1>
+          <shopper @select="selectItem" :shoppers="shoppers" :has-more="hasMore" @refresh="refresh"></shopper>
+        </div>
+      </div>
+    </scroll>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -15,13 +26,67 @@
   import Tab from 'components/tab/tab';
   import Split from 'base/split/split';
   import Shopper from 'components/shopper/shopper';
+  import Scroll from 'base/scroll/scroll';
+  import {getShopperList} from 'api/shopper';
+  import {mapMutations} from 'vuex';
 
   export default {
+    data () {
+      return {
+        shoppers: [],
+        hasMore: true,
+        offset: 0,
+        pullup: true
+      };
+    },
+    created () {
+      setTimeout(() => {
+        this._getShopperList();
+      }, 20);
+    },
+    methods: {
+      refresh () {
+        this.$refs.scroll.refresh();
+      },
+      getShopperMoreList () {
+        if (!this.hasMore) {
+          return;
+        }
+        this.offset += 20;
+        getShopperList(this.offset).then((response) => {
+          this.shoppers = this.shoppers.concat(response);
+          this._checkMore(response);
+        });
+      },
+      selectItem (item) {
+        this.$router.push({
+          path: `/shop/id=${item.id}`
+        });
+        this.setselectedShopper(item);
+      },
+      _getShopperList () {
+        this.hasMore = true;
+        this.offset = 0;
+        this.$refs.scroll.scrollTo(0, 0);
+        getShopperList(this.offset).then((response) => {
+          this.shoppers = response;
+        });
+      },
+      _checkMore (data) {
+        if (!data.length) {
+          this.hasMore = false;
+        }
+      },
+      ...mapMutations({
+        setselectedShopper: 'SET_SELECTED_SHOPPER'
+      })
+    },
     components: {
       MHeader,
       Tab,
       Split,
-      Shopper
+      Shopper,
+      Scroll
     }
   };
 </script>
@@ -29,12 +94,23 @@
 <style lang="stylus" ref="stylesheet/stylus">
   @import './common/stylus/mixin.styl'
   
-  .recommend
-    .recommend-shopper
-      padding-left: 15px
-      line-height: 34px
-      font-size: 16px
-      font-weight: 600
-      background: #fff;
-      border-1px(#eee)
+  #app
+    position: fixed
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    overflow: hidden
+    .app-content
+      height: 100%
+      overflow: hidden
+      .recommend
+        position: relative
+        .recommend-shopper
+          padding-left: 15px
+          line-height: 34px
+          font-size: 16px
+          font-weight: 600
+          background: #fff;
+          border-1px(#eee)
 </style>

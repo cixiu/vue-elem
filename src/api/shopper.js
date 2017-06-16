@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-export function getShopperList () {
+export function getShopperList (offset) {
 	const url = 'https://mainsite-restapi.ele.me/shopping/restaurants';
 
 	const data = {
 		latitude: 28.194844,
 		longitude: 113.011618,
-		offset: 0,
+		offset,
 		limit: 20,
 		'extras[]': 'activities',
 		terminal: 'h5'
