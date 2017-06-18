@@ -17,7 +17,9 @@
         </div>
       </div>
     </scroll>
-    <router-view></router-view>
+    <transition name="slide">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -81,6 +83,11 @@
         setselectedShopper: 'SET_SELECTED_SHOPPER'
       })
     },
+    // watch: {
+    //   '$route' () {
+    //     window.location.reload();
+    //   }
+    // },
     components: {
       MHeader,
       Tab,
@@ -101,6 +108,10 @@
     bottom: 0
     left: 0
     overflow: hidden
+    &.slide-enter, .slide-leave-active
+      transform: translate3d(100%, 0, 0)
+    &.slide-enter-active, .slide-leave-active
+      transition: all 0.5s
     .app-content
       height: 100%
       overflow: hidden

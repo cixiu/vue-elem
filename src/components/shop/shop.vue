@@ -1,23 +1,32 @@
 <template>
-	<transition name="slide">
 		<div class="shop">
 			<shop-header :shopid="shopid"></shop-header>
+			<div class="tab border-1px">
+				<div class="tab-item active">
+					<span class="text">商品</span>
+				</div>
+				<div class="tab-item">
+					<span class="text">评价</span>
+				</div>
+			</div>
+			<div class="goods-wrapper">
+				<goods :shopid="shopid"></goods>
+			</div>
 		</div>
-	</transition>
 </template>
 
 <script type="text/ecmascript-6">
 	import ShopHeader from 'components/shop-header/shop-header';
+	import Goods from 'components/goods/goods';
 	import {mapGetters} from 'vuex';
-	import {getGoods, getRatings, getScores, getRatingsTags} from 'api/shop';
-	import {parseLocation} from 'common/js/util';
+	import {getRatings, getScores, getRatingsTags} from 'api/shop';
+	// import {parseLocation} from 'common/js/util';
 
 	export default {
 		data () {
 			return {
-				shopid: parseLocation(window.location),
+				shopid: this.$route.params.id,
 				offset: 0,
-				goods: [],
 				ratings: [],
 				scores: {},
 				tags: []
@@ -29,18 +38,11 @@
 			])
 		},
 		created () {
-			this._getGoods();
 			this._getRatings();
 			this._getScores();
 			this._getRatingsTags();
 		},
 		methods: {
-			_getGoods () {
-				getGoods(this.shopid).then((response) => {
-					this.goods = response;
-					// console.log(this.goods);
-				});
-			},
 			_getRatings () {
 				getRatings(this.shopid, this.offset).then((response) => {
 					this.ratings = response;
@@ -61,12 +63,15 @@
 			}
 		},
 		components: {
-			ShopHeader
+			ShopHeader,
+			Goods
 		}
 	};
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus" rel="stylesheet/stylus">
+	@import '../../common/stylus/mixin.styl'
+	
 	.shop
 		position: fixed
 		top: 0
@@ -79,4 +84,20 @@
 			transform: translate3d(100%, 0, 0)
 		&.slide-enter-active, .slide-leave-active
 			transition: all 0.5s
+		.tab
+			display: flex
+			height: 45px
+			line-height: 45px
+			font-size: 14px
+			border-1px(#ddd)
+			.tab-item
+				flex: 1
+				text-align: center
+				.text
+					padding: 0 2px 4px 2px
+					color: #666
+				&.active
+					.text
+						color: #3190e8
+						border-bottom: 2px solid #3190e8
 </style>
