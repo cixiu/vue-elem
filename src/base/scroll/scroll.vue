@@ -36,6 +36,10 @@
 			bounce: {
 				type: Boolean,
 				default: false
+			},
+			scrollEnd: {
+				type: Boolean,
+				default: false
 			}
 		},
 		mounted () {
@@ -73,6 +77,11 @@
 						this.$emit('beforeScroll');
 					});
 				}
+				if (this.scrollEnd) {
+					this.scroll.on('scrollEnd', () => {
+						this.$emit('scrollToEnd');
+					});
+				}
 			},
 			refresh () {
 				this.scroll && this.scroll.refresh();
@@ -82,6 +91,9 @@
 			},
 			scrollTo () {
 				this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments);
+			},
+			disable () {
+				this.scroll && this.scroll.disable();
 			}
 		},
 		watch: {

@@ -12,8 +12,10 @@
 						class="foods-wrapper" 
 						ref="foodsWrapper"
 						:probe-type="probeType" 
-						:listen-scroll="listenScroll" 
+						:listen-scroll="listenScroll"
+						:scroll-end="scrollEnd"
 						@scroll="scroll"
+						@scrollToEnd="scrollToEnd"
 		>
 			<ul>
 				<li class="food-list food-list-hook" v-for="(item,index) in goods">
@@ -38,6 +40,7 @@
 									<span class="month-sales">月售{{ food.month_sales }}份</span>
 									<span class="satisfy-rate">好评率{{ food.satisfy_rate }}%</span>
 								</div>
+								<p class="activity" v-if="food.activity"><span>{{ food.activity.image_text }}</span></p>
 								<div class="price" v-if="food.specifications.length">
 									<span class="min-price">
 										<span class="money-icon">￥</span>{{minPrice(food)}}
@@ -45,20 +48,34 @@
 									<span class="text">起</span>
 								</div>
 								<div class="price" v-else>
-									<span class="now"><span class="money-icon">￥</span>{{ food.specfoods[0].price }}</span>
-									<span class="original"  v-if="food.specfoods[0].original_price">￥{{ food.specfoods[0].original_price }}</span>
+									<span class="now">
+										<span class="money-icon">￥</span>
+										<span v-if="food.activity && food.activity.is_price_changed">{{ food.specfoods[0].original_price }}</span>
+										<span v-else>{{ food.specfoods[0].price }}</span>
+									</span>
+									<span class="original"  v-if="food.specfoods[0].original_price && !food.activity.is_price_changed">￥{{ food.specfoods[0].original_price }}</span>
 								</div>
+								<div class="add-to-cart" v-if="!food.specfoods[0].stock">
+									<span class="sold-out">已售罄</span>
+								</div>
+								<div class="add-to-cart" v-else-if="!food.specifications.length">
+									<cartball :food="food" @cart-add="_drop"></cartball>
+								</div>
+								<div class="add-to-cart" v-else>选规格</div>
 							</div>
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</scroll>
+		<shopcart :select-foods="selectFoods" ref="shopcart"></shopcart>
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
 	import Scroll from 'base/scroll/scroll';
+	import Shopcart from 'components/shopcart/shopcart';
+	import Cartball from 'base/cartball/cartball';
 	import {getGoods} from 'api/shop';
 	import {parseImage} from 'common/js/util';
 
@@ -69,7 +86,9 @@
 				probeType: 3,
 				listenScroll: true,
 				scrollY: 0,
-				listHeight: []
+				listHeight: [],
+				currentIndex: 0,
+				scrollEnd: true
 			};
 		},
 		props: {
@@ -82,27 +101,43 @@
 			this._getGoods();
 		},
 		computed: {
-			currentIndex () {
-				let len = this.listHeight.length;
-				for (let i = 0; i < len; i++) {
-					let height1 = this.listHeight[i];
-					let height2 = this.listHeight[i + 1];
-					if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-						return i;
-					}
-				}
-				return 0;
+			// 将选中的商品收集起来传入购入车
+			selectFoods () {
+				let foods = [];
+				this.goods.forEach((good) => {
+					good.foods.forEach((food) => {
+						if (food.count) {
+							foods.push(food);
+						}
+					});
+				});
+				console.log(foods);
+				return foods;
 			}
 		},
 		methods: {
 			selectMenu (index, event) {
 				let foodList = this.$refs.foodsWrapper.$el.querySelectorAll('.food-list-hook');
 				let el = foodList[index];
+				this.clickMenu = true;  // 左侧菜单栏的标志位
 				this.currentIndex = index;
 				this.$refs.foodsWrapper.scrollToElement(el, 300);
 			},
 			scroll (pos) {
 				this.scrollY = Math.abs(Math.round(pos.y));
+				// 防止scrollToEnd之后this.clickMenu = false之后还能触发this.flag = false;
+				setTimeout(() => {
+					if (!this.clickMenu) {
+						this.flag = false;
+					}
+				}, 20);
+			},
+			scrollToEnd () {
+				if (this.clickMenu) {
+					this.clickMenu = !this.clickMenu;
+					this.flag = true;  // 右侧商品列表的标志位
+					return;
+				}
 			},
 			parseImage (imagePath) {
 				if (!imagePath) {
@@ -140,10 +175,35 @@
 					height += foodList[i].clientHeight;
 					this.listHeight.push(height);
 				}
+			},
+			_drop (target) {
+				setTimeout(() => {
+					this.$refs.shopcart.drop(target);
+				}, 20);
+			}
+		},
+		watch: {
+			scrollY (newY) {
+				if (!this.clickMenu && !this.flag) { // 阻止scrollToElement触发的滚动事件
+					let len = this.listHeight.length;
+					for (let i = 0; i < len - 1; i++) {
+						let height1 = this.listHeight[i];
+						let height2 = this.listHeight[i + 1];
+						if (newY >= height1 && newY < height2) {
+							this.currentIndex = i;
+							return;
+						}
+					}
+					this.currentIndex = len - 2;
+					this.clickMenu = true;
+					return;
+				}
 			}
 		},
 		components: {
-			Scroll
+			Scroll,
+			Shopcart,
+			Cartball
 		}
 	};
 </script>
@@ -255,6 +315,15 @@
 							display: inline-block
 							margin-right: 4px
 							font-size: 12px
+					.activity
+						transform-origin: left
+						transform: scale(0.8)
+						color: #f07373
+						span
+							display: inline-block
+							padding: 0 2px
+							font-size: 11px
+							border: 1px solid #f07373
 					.price
 						padding-top: 10px
 						font-size: 0
@@ -277,4 +346,12 @@
 							font-weight: 400
 							color: #999
 							text-decoration: line-through
+					.add-to-cart
+						position: absolute
+						right: 10px
+						bottom: 15px
+						.sold-out
+							line-height: 15px
+							font-size: 13px
+							color: #999
 </style>

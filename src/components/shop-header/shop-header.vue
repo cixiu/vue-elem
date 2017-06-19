@@ -112,6 +112,7 @@
 <script type="text/ecmascript-6">
 	import {getShop} from 'api/shop';
 	import {parseImage} from 'common/js/util';
+	import {mapGetters, mapMutations} from 'vuex';
 	import Split from 'base/split/split';
 	import Scroll from 'base/scroll/scroll';
 	import Star from 'base/star/star';
@@ -152,11 +153,14 @@
 					return;
 				}
 				return this.shopper.opening_hours[0].replace(re, '-');
-			}
+			},
+			...mapGetters([
+				'selectedShopper'
+			])
 		},
 		methods: {
 			back () {
-				this.$router.back();
+				this.$router.push('/');
 			},
 			showShopDetail () {
 				this.shopDetail = true;
@@ -180,8 +184,12 @@
 				getShop(this.shopid).then((response) => {
 					this.shopper = response;
 					this.avatar = parseImage(this.shopper.image_path);
+					this.setselectedShopper(this.shopper);
 				});
-			}
+			},
+			...mapMutations({
+				setselectedShopper: 'SET_SELECTED_SHOPPER'
+			})
 		},
 		components: {
 			Split,
