@@ -20,7 +20,7 @@
 				</div>
 				<div class="bulletin-wrapper">
 					<span class="bulletin-title">公告 :</span>
-					<span class="bulletin-text">{{ shopper.promotion_info }}</span>
+					<span class="bulletin-text">{{ shopper.promotion_info || '欢迎光临，用餐高峰期请提前下单，谢谢。' }}</span>
 				</div>
 			</div>
 		</div>

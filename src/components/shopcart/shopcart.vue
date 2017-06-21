@@ -15,7 +15,7 @@
 					</div>
 				</div>
 				<div class="content-right">
-					<div class="pay" :class="{ enough: selectedShopper.float_minimum_order_amount <= totalPrice }">
+					<div class="pay" :class="{ enough: selectedShopper.float_minimum_order_amount < totalPrice }">
 						{{ payDesc }}
 					</div>
 				</div>
@@ -48,44 +48,50 @@
 					{ show: false },
 					{ show: false }
 				],
-				dropBalls: []
+				dropBalls: [],
+				cartFoodsList: []
 			};
 		},
-		props: {
-			selectFoods: {
-				type: Array,
-				default: []
-			}
-		},
 		computed: {
-			totalCount () {
-				let count = 0;
-				this.selectFoods.forEach((food) => {
-					count += food.count;
-				});
-				return count;
+			// 当前商家的购物车信息
+			shopCart () {
+				return Object.assign({}, this.cartFoods[this.$route.params.id]);
 			},
+			// 购物车商品总数量
+			totalCount () {
+				let num = 0;
+				Object.values(this.shopCart).forEach((item) => {
+					Object.values(item).forEach((food) => {
+						Object.values(food).forEach((data) => {
+							num += data.count;
+						});
+					});
+				});
+				return num;
+			},
+			// 购物车商品总价格
 			totalPrice () {
 				let total = 0;
-				this.selectFoods.forEach((food) => {
-					if (food.activity && food.activity.is_price_changed) {
-						food.price = food.specfoods[0].original_price;
-					} else {
-						food.price = food.specfoods[0].price;
-					}
-					total += food.count * food.price;
+				Object.values(this.shopCart).forEach((item) => {
+					Object.values(item).forEach((food) => {
+						Object.values(food).forEach((data) => {
+							total += data.count * (data.price + data.packing_fee);
+						});
+					});
 				});
 				return total;
 			},
+			// 商家配送费
 			deliveryPrice () {
 				if (!this.selectedShopper.piecewise_agent_fee) {
 					return;
 				}
 				return this.selectedShopper.piecewise_agent_fee.description;
 			},
+			// 商家起送额度
 			payDesc () {
 				let minPrice = this.selectedShopper.float_minimum_order_amount;
-				if (this.totalPrice === 0) {
+				if (this.totalPrice === 0 && minPrice !== 0) {
 					return `¥${minPrice}起送`;
 				} else if (this.totalPrice < minPrice) {
 					let diff = minPrice - this.totalPrice;
@@ -95,7 +101,8 @@
 				}
 			},
 			...mapGetters([
-				'selectedShopper'
+				'selectedShopper',
+				'cartFoods'
 			])
 		},
 		methods: {
@@ -148,6 +155,11 @@
 					el.style.display = 'none';
 					this.$refs.logoWrapper.style.animation = 'scale .4s';
 				}
+			}
+		},
+		watch: {
+			shopCart (newshopCart) {
+				console.log(this.cartFoodsList);
 			}
 		}
 	};

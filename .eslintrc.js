@@ -26,6 +26,7 @@ module.exports = {
     "semi": ["error", "always"],
     "indent": 0,
     "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
-    "no-tabs": "off"
+    "no-tabs": "off",
+    "camelcase": 0
   }
 }

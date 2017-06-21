@@ -1,3 +1,4 @@
 export default {
-	selectedShopper: []
+	selectedShopper: [],
+	cartFoods: {}
 };

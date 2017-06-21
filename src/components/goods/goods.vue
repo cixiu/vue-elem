@@ -3,6 +3,7 @@
 		<scroll class="menu-wrapper">
 				<ul>
 					<li class="menu-item border-1px" v-for="(item,index) in goods" :class="{current: currentIndex === index}" @click="selectMenu(index,$event)">
+						<div class="num" v-if="num(item.id)">{{ num(item.id) }}</div>
 						<img v-if="item.icon_url" width="9" height="12" :src="parseImage(item.icon_url)">
 						<span class="text">{{ item.name }}</span>
 					</li>
@@ -58,17 +59,45 @@
 								<div class="add-to-cart" v-if="!food.specfoods[0].stock">
 									<span class="sold-out">已售罄</span>
 								</div>
-								<div class="add-to-cart" v-else-if="!food.specifications.length">
-									<cartball :food="food" @cart-add="_drop"></cartball>
+								<div class="add-to-cart" v-else>
+									<cartball :goods="goods" :food="food" @cart-add="_drop" @select-spec="selectSpec"></cartball>
 								</div>
-								<div class="add-to-cart" v-else>选规格</div>
+								<!-- <div class="add-to-cart" v-else>
+									<specifications @add-cart="selectSpec"></specifications>
+								</div> -->
 							</div>
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</scroll>
-		<shopcart :select-foods="selectFoods" ref="shopcart"></shopcart>
+		<transition name="fade">
+			<div class="specifications-wrapper" v-show="showFlag">
+				<div class="specifications-content" v-if="selectFood">
+					<h1 class="title">{{ selectFood.name }}</h1>
+					<div class="spec">
+						<div class="spec-item" v-for="spec in selectFood.specifications" v-if="selectFood.specifications">
+							<h2 class="name">{{ spec.name }}</h2>
+							<span class="value" v-for="(value,index) in spec.values" :class="{ current: specIndex === index }" @click="choseSpec(index)">{{ value }}</span>
+						</div>
+						<div class="spec-item" v-for="attr in selectFood.attrs" v-if="selectFood.attrs">
+							<h2 class="name">{{ attr.name }}</h2>
+							<span class="value" v-for="(value,index) in attr.values" :class="{ current: specAttrIndex === index }" @click="choseSpecAttr(index)">{{ value }}</span>
+						</div>
+					</div>
+					<div class="count">
+						<div class="price">
+							<span class="money-icon">¥</span>
+							<span class="price-num">{{ selectFood.specfoods[specIndex].price }}</span>
+						</div>
+						<div class="cartButton" :class="{ disable: selectFood.specfoods[specIndex].stock === 0 }" @click="addCart">{{selectFood.specfoods[specIndex].stock ? '加入购物车' : '尽限0份'}}</div>
+					</div>
+					<span class="close icon-close" @click="close"></span>
+				</div>
+				<div class="background"></div>
+			</div>
+		</transition>
+		<shopcart ref="shopcart"></shopcart>
 	</div>
 </template>
 
@@ -78,6 +107,8 @@
 	import Cartball from 'base/cartball/cartball';
 	import {getGoods} from 'api/shop';
 	import {parseImage} from 'common/js/util';
+	import {mapGetters, mapMutations} from 'vuex';
+	import {createFood} from 'common/js/food';
 
 	export default {
 		data () {
@@ -88,7 +119,11 @@
 				scrollY: 0,
 				listHeight: [],
 				currentIndex: 0,
-				scrollEnd: true
+				scrollEnd: true,
+				showFlag: false,	  // 点击选规格按钮 显示规格列表
+				selectFood: null,   // 规格商品选中的食物
+				specIndex: 0,       // 选中规格的索引
+				specAttrIndex: 0   	// 选中规格属性的索引
 			};
 		},
 		props: {
@@ -101,21 +136,29 @@
 			this._getGoods();
 		},
 		computed: {
-			// 将选中的商品收集起来传入购入车
-			selectFoods () {
-				let foods = [];
-				this.goods.forEach((good) => {
-					good.foods.forEach((food) => {
-						if (food.count) {
-							foods.push(food);
-						}
-					});
-				});
-				console.log(foods);
-				return foods;
-			}
+			// 当前商家的购物车信息
+			shopCart () {
+				return Object.assign({}, this.cartFoods[this.$route.params.id]);
+			},
+			...mapGetters([
+				'cartFoods'
+			])
 		},
 		methods: {
+			// 购物车中对应商品在商品分类的数量
+			num (id) {
+				let num = 0;
+				Object.keys(this.shopCart).forEach((category_id) => {
+					if (Number(category_id) === id) {
+						Object.values(this.shopCart[category_id]).forEach((item) => {
+							Object.values(item).forEach((data) => {
+								num += data.count;
+							});
+						});
+					}
+				});
+				return num;
+			},
 			selectMenu (index, event) {
 				let foodList = this.$refs.foodsWrapper.$el.querySelectorAll('.food-list-hook');
 				let el = foodList[index];
@@ -158,6 +201,36 @@
 				});
 				return ret[0];
 			},
+			// 打开规格列表
+			selectSpec (food) {
+				this.showFlag = true;
+				this.selectFood = food;
+				this.specIndex = 0;
+				this.specAttrIndex = 0;
+			},
+			// 关闭规格列表
+			close () {
+				this.showFlag = false;
+			},
+			// 选中规格的索引
+			choseSpec (index) {
+				this.specIndex = index;
+			},
+			// 选中规格属性的索引
+			choseSpecAttr (index) {
+				this.specAttrIndex = index;
+			},
+			// 将规格商品加入购物车
+			addCart () {
+				if (this.selectFood.specfoods[this.specIndex].stock === 0) {
+					return;
+				}
+				this.selectFood.shopid = this.$route.params.id;
+				this.selectFood.specIndex = this.specIndex;
+				this.selectFood.specAttrIndex = this.specAttrIndex;
+				this.setcartFoods(createFood(this.selectFood));
+				this.close();
+			},
 			_getGoods () {
 				getGoods(this.shopid).then((response) => {
 					this.goods = response;
@@ -176,11 +249,15 @@
 					this.listHeight.push(height);
 				}
 			},
-			_drop (target) {
+			_drop (food, target) {
+				// 小球下落
 				setTimeout(() => {
 					this.$refs.shopcart.drop(target);
 				}, 20);
-			}
+			},
+			...mapMutations({
+				'setcartFoods': 'SET_CART_FOODS'
+			})
 		},
 		watch: {
 			scrollY (newY) {
@@ -244,6 +321,20 @@
 						background: #3190e8
 				&:last-child
 					border-none()
+				.num
+					position: absolute
+					top: 0
+					right: 0
+					height: 16px
+					padding: 0 4px
+					line-height: 16px
+					text-align: center
+					font-size: 9px
+					border-radius: 16px
+					color: #fff
+					background: #ff461d
+					&:after
+						display: none
 		.foods-wrapper
 			flex: 1
 			.title
@@ -354,4 +445,129 @@
 							line-height: 15px
 							font-size: 13px
 							color: #999
+						// .specifications
+						// 	padding: 0 6px
+						// 	line-height: 25px
+						// 	font-size: 12px
+						// 	border-radius: 13px
+						// 	background: #3199e8
+						// 	color: #fff
+		.specifications-wrapper
+			&.fade-enter-active
+				animation: bg-fadeIn 0.3s
+				.specifications-content
+					animation: content-zoom 0.3s
+			&.fade-leave-active
+				animation: bg-fadeOut 0.3s
+				.specifications-content
+					animation: content-shrink 0.3s
+			.background
+				position: fixed
+				top: 0
+				right: 0
+				bottom: 0
+				left: 0
+				z-index: 998
+				background: rgba(0, 0, 0, 0.5)
+			.specifications-content
+				position: fixed
+				top: 50%
+				left: 10%
+				width: 80%
+				z-index: 999
+				border-radius: 4px
+				transform: translate3d(0, -50%, 0)
+				transform-origin: top
+				background: #fff;
+				.title
+					padding: 12px 30px
+					line-height: 22px
+					font-size: 16px
+					text-align: center
+					color: #333
+				.spec
+					padding: 0 0 20px 15px
+					.spec-item
+						margin-bottom: 18px
+						&:last-child
+							margin-bottom: 0
+						.name
+							line-height: 20px
+							font-size: 13px
+							color: #666
+						.value
+							box-sizing: border-box
+							display: inline-block
+							vertical-align: middle
+							white-space: nowrap
+							min-width: 50px
+							height: 24px
+							margin: 6px 15px 0 0
+							padding: 0 9px
+							line-height: 24px
+							font-size: 13px
+							border: 1px solid #999
+							border-radius: 12px
+							color: #666
+							text-align: center
+							&.current
+								font-weight: 700
+								color: #3199e8
+								border-color: #3199e8
+				.count
+					box-sizing: border-box
+					display: flex
+					align-items: center
+					justify-content: space-between
+					padding: 12px 15px
+					border-top: 1px solid #eee
+					border-bottom: 1px solid #eee
+					background: #f9f9f9
+					.price
+						display: inline-block
+						font-size: 21px
+						color: #ff6000
+						.money-icon
+							vertical-align: bottom
+							display: inline-block
+							margin-right: -7px
+							font-size: 11px
+						.price-num
+							font-weight: 700
+					.cartButton
+						display: inline-block
+						padding: 0 12px
+						line-height: 32px
+						font-size: 14px
+						border-radius: 4px
+						text-align: center
+						background: #3199e8
+						color: #fff
+						&.disable
+							background: #ccc
+				.close
+					position: absolute
+					top: 10px
+					right: 8px
+					font-size: 22px
+	@keyframes bg-fadeIn
+		0%
+			opacity: 0
+		100%
+			opacity: 1
+	@keyframes content-zoom
+		0%
+			transform: scale(0) translate3d(0, -50%, 0)
+		100%
+			transform: scale(1) translate3d(0, -50%, 0)
+	@keyframes bg-fadeOut
+		0%
+			opacity: 1
+		100%
+			opacity: 0
+	@keyframes content-shrink
+		0%
+			transform: scale(1) translate3d(0, -50%, 0)
+		100%
+			transform: scale(0) translate3d(0, -50%, 0)
 </style>
