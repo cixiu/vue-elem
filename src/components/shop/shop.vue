@@ -2,15 +2,18 @@
 		<div class="shop">
 			<shop-header :shopid="shopid"></shop-header>
 			<div class="tab border-1px">
-				<div class="tab-item active">
+				<div class="tab-item" :class="{ active: showFlag }" @click="showGoods">
 					<span class="text">商品</span>
 				</div>
-				<div class="tab-item">
+				<div class="tab-item" :class="{ active: !showFlag }" @click="showRatins">
 					<span class="text">评价</span>
 				</div>
 			</div>
-			<div class="goods-wrapper">
+			<div class="goods-wrapper" v-show="showFlag">
 				<goods :shopid="shopid"></goods>
+			</div>
+			<div class="ratings-wrapper" v-if="!showFlag">
+				<ratings></ratings>
 			</div>
 		</div>
 </template>
@@ -18,18 +21,14 @@
 <script type="text/ecmascript-6">
 	import ShopHeader from 'components/shop-header/shop-header';
 	import Goods from 'components/goods/goods';
+	import Ratings from 'components/ratings/ratings';
 	import {mapGetters} from 'vuex';
-	import {getRatings, getScores, getRatingsTags} from 'api/shop';
-	// import {parseLocation} from 'common/js/util';
 
 	export default {
 		data () {
 			return {
 				shopid: this.$route.params.id,
-				offset: 0,
-				ratings: [],
-				scores: {},
-				tags: []
+				showFlag: true
 			};
 		},
 		computed: {
@@ -37,34 +36,18 @@
 				'selectedShopper'
 			])
 		},
-		created () {
-			this._getRatings();
-			this._getScores();
-			this._getRatingsTags();
-		},
 		methods: {
-			_getRatings () {
-				getRatings(this.shopid, this.offset).then((response) => {
-					this.ratings = response;
-					// console.log(this.ratings);
-				});
+			showRatins () {
+				this.showFlag = false;
 			},
-			_getScores () {
-				getScores(this.shopid).then((response) => {
-					this.scores = response;
-					// console.log(this.scores);
-				});
-			},
-			_getRatingsTags () {
-				getRatingsTags(this.shopid).then((response) => {
-					this.tags = response;
-					// console.log(this.ratings);
-				});
+			showGoods () {
+				this.showFlag = true;
 			}
 		},
 		components: {
 			ShopHeader,
-			Goods
+			Goods,
+			Ratings
 		}
 	};
 </script>

@@ -1,5 +1,5 @@
 export class Food {
-	constructor ({shopid, category_id, item_id, food_id, name, price, count, packing_fee, stock, spec, attr}) {
+	constructor ({shopid, category_id, item_id, food_id, name, price, count, packing_fee, stock, spec, attr, specfoods}) {
 		this.shopid = shopid;
 		this.category_id = category_id;
 		this.item_id = item_id;
@@ -11,6 +11,7 @@ export class Food {
 		this.stock = stock;
 		this.spec = spec;
 		this.attr = attr;
+		this.specfoods = specfoods;
 	}
 };
 
@@ -20,8 +21,8 @@ export function createFood (foodData) {
 	} else {
 		foodData.price = foodData.specfoods[0].price;
 	}
-	let spec;
-	let attr;
+	let spec = '';
+	let attr = [];
 	// 如果选中的是规格商品
 	if (foodData.specIndex >= 0) {
 		spec = foodData.specifications[0].values[foodData.specIndex];
@@ -29,10 +30,15 @@ export function createFood (foodData) {
 	} else {
 		spec = '';
 	}
-	if (foodData.specAttrIndex >= 0 && foodData.attrs.length) {
-		attr = foodData.attrs[0].values[foodData.specAttrIndex];
+	if (foodData.specAttrIndex && foodData.attrs.length) {
+		// attr = foodData.attrs[0].values[foodData.specAttrIndex];
+		// console.log(foodData.specAttrIndex);
+		foodData.attrs.forEach((item, attrIndex) => {
+			// attr += `${item.values[foodData.specAttrIndex]}/`;
+			attr.push(item.values[foodData.specAttrIndex[attrIndex].index]);
+		});
 	} else {
-		attr = '';
+		attr = [];
 	}
 	return new Food({
 		shopid: foodData.shopid,
@@ -45,6 +51,7 @@ export function createFood (foodData) {
 		packing_fee: foodData.specfoods[0].packing_fee,
 		stock: foodData.specfoods[0].stock,
 		spec,
-		attr
+		attr,
+		specfoods: foodData.specfoods
 	});
 }

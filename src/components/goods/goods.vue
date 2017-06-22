@@ -71,18 +71,18 @@
 				</li>
 			</ul>
 		</scroll>
-		<transition name="fade">
-			<div class="specifications-wrapper" v-show="showFlag">
-				<div class="specifications-content" v-if="selectFood">
+		<div class="specifications-wrapper" v-if="selectFood">
+			<transition name="fade">
+				<div class="specifications-content" v-show="showFlag">
 					<h1 class="title">{{ selectFood.name }}</h1>
 					<div class="spec">
 						<div class="spec-item" v-for="spec in selectFood.specifications" v-if="selectFood.specifications">
 							<h2 class="name">{{ spec.name }}</h2>
 							<span class="value" v-for="(value,index) in spec.values" :class="{ current: specIndex === index }" @click="choseSpec(index)">{{ value }}</span>
 						</div>
-						<div class="spec-item" v-for="attr in selectFood.attrs" v-if="selectFood.attrs">
+						<div class="spec-item" v-for="(attr,attrIndex) in selectFood.attrs" v-if="selectFood.attrs">
 							<h2 class="name">{{ attr.name }}</h2>
-							<span class="value" v-for="(value,index) in attr.values" :class="{ current: specAttrIndex === index }" @click="choseSpecAttr(index)">{{ value }}</span>
+							<span class="value" v-for="(value,index) in attr.values" :class="{ current: specAttrIndex[attrIndex].index === index }" @click="choseSpecAttr(attrIndex,index)">{{ value }}</span>
 						</div>
 					</div>
 					<div class="count">
@@ -94,8 +94,10 @@
 					</div>
 					<span class="close icon-close" @click="close"></span>
 				</div>
-				<div class="background"></div>
-			</div>
+			</transition>
+		</div>
+		<transition name="bg-fade">
+			<div class="background" v-show="showFlag"></div>
 		</transition>
 		<shopcart ref="shopcart"></shopcart>
 	</div>
@@ -123,7 +125,12 @@
 				showFlag: false,	  // 点击选规格按钮 显示规格列表
 				selectFood: null,   // 规格商品选中的食物
 				specIndex: 0,       // 选中规格的索引
-				specAttrIndex: 0   	// 选中规格属性的索引
+				specAttrIndex: [    // 选中规格属性的索引
+					{ index: 0 },
+					{ index: 0 },
+					{ index: 0 },
+					{ index: 0 }
+				]
 			};
 		},
 		props: {
@@ -206,19 +213,25 @@
 				this.showFlag = true;
 				this.selectFood = food;
 				this.specIndex = 0;
-				this.specAttrIndex = 0;
 			},
 			// 关闭规格列表
 			close () {
 				this.showFlag = false;
+				this.specIndex = 0;
+				this.specAttrIndex = [
+					{ index: 0 },
+					{ index: 0 },
+					{ index: 0 },
+					{ index: 0 }
+				];
 			},
 			// 选中规格的索引
 			choseSpec (index) {
 				this.specIndex = index;
 			},
 			// 选中规格属性的索引
-			choseSpecAttr (index) {
-				this.specAttrIndex = index;
+			choseSpecAttr (attrIndex, index) {
+				this.specAttrIndex[attrIndex].index = index;
 			},
 			// 将规格商品加入购物车
 			addCart () {
@@ -445,30 +458,7 @@
 							line-height: 15px
 							font-size: 13px
 							color: #999
-						// .specifications
-						// 	padding: 0 6px
-						// 	line-height: 25px
-						// 	font-size: 12px
-						// 	border-radius: 13px
-						// 	background: #3199e8
-						// 	color: #fff
 		.specifications-wrapper
-			&.fade-enter-active
-				animation: bg-fadeIn 0.3s
-				.specifications-content
-					animation: content-zoom 0.3s
-			&.fade-leave-active
-				animation: bg-fadeOut 0.3s
-				.specifications-content
-					animation: content-shrink 0.3s
-			.background
-				position: fixed
-				top: 0
-				right: 0
-				bottom: 0
-				left: 0
-				z-index: 998
-				background: rgba(0, 0, 0, 0.5)
 			.specifications-content
 				position: fixed
 				top: 50%
@@ -479,6 +469,10 @@
 				transform: translate3d(0, -50%, 0)
 				transform-origin: top
 				background: #fff;
+				&.fade-enter-active
+					animation: content-zoom 0.3s
+				&.fade-leave-active
+					animation: content-shrink 0.3s
 				.title
 					padding: 12px 30px
 					line-height: 22px
@@ -530,7 +524,8 @@
 						.money-icon
 							vertical-align: bottom
 							display: inline-block
-							margin-right: -7px
+							margin-right: -5px
+							margin-bottom: 2px
 							font-size: 11px
 						.price-num
 							font-weight: 700
@@ -550,21 +545,23 @@
 					top: 10px
 					right: 8px
 					font-size: 22px
-	@keyframes bg-fadeIn
-		0%
-			opacity: 0
-		100%
-			opacity: 1
+		.background
+			position: fixed
+			top: 0
+			right: 0
+			bottom: 0
+			left: 0
+			z-index: 998
+			background: rgba(0, 0, 0, 0.5)
+			&.bg-fade-enter, &.bg-fade-leave-active
+				opacity: 0
+			&.bg-fade-enter-active, &.bg-fade-leave-active
+				transition: all .4s
 	@keyframes content-zoom
 		0%
 			transform: scale(0) translate3d(0, -50%, 0)
 		100%
 			transform: scale(1) translate3d(0, -50%, 0)
-	@keyframes bg-fadeOut
-		0%
-			opacity: 1
-		100%
-			opacity: 0
 	@keyframes content-shrink
 		0%
 			transform: scale(1) translate3d(0, -50%, 0)

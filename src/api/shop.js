@@ -31,11 +31,12 @@ export function getGoods (id) {
 };
 
 // 获取商家评论数据
-export function getRatings (id, offset) {
+export function getRatings (id, offset, tag_name) {
 	const url = `https://mainsite-restapi.ele.me/ugc/v2/restaurants/${id}/ratings`;
 
 	const data = {
 		has_content: true,
+		tag_name,
 		offset,
 		limit: 10
 	};

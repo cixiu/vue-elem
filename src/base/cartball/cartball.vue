@@ -1,6 +1,6 @@
 <template>
 	<div class="chose">
-		<div class="cartball" v-if="!food.specifications.length || food.specfoods.length === 1">
+		<div class="cartball" v-if="!food.specifications || !food.specifications.length || !food.specfoods || food.specfoods.length === 1">
 			<div class="cart-decrease icon-remove_circle_outline" v-show="foodCount" @click.stop.prevent="decreaseCart"></div>
 			<div class="cart-count" v-show="foodCount">{{ foodCount }}</div>
 			<div class="cart-add icon-add_circle" @click.stop.prevent="addCart($event)"></div>

@@ -10,7 +10,7 @@
 		props: {
 			title: {
 				type: String,
-				default: '正则载入...'
+				default: '正在加载...'
 			}
 		}
 	};

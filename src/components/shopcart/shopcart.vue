@@ -2,7 +2,7 @@
 	<div class="shopcart-wrapper">
 		<div class="shopcart">
 			<div class="content">
-				<div class="content-left">
+				<div class="content-left" @click="toggleList">
 					<div class="logo-wrapper" ref="logoWrapper">
 						<div class="logo" :class="{ highlight: totalCount>0 }">
 							<i class="icon-shopping_cart" :class="{ highlight: totalCount>0 }"></i>
@@ -31,12 +31,51 @@
 					<div class="inner inner-hook"></div>
 				</div>
 			</transition-group>
+			<transition name="fold">
+				<div class="shopcart-list" v-if="listShow">
+					<div class="list-header">
+						<span class="title">购物车</span>
+						<span class="empty" @click="empty">清空</span>
+					</div>
+					<scroll :data="cartFoodsList" class="list-content">
+						<div>
+							<ul>
+								<li class="food border-1px" v-for="food in cartFoodsList">
+									<div class="detail">
+										<span class="name">{{ food.name }}</span>
+										<p class="desc">
+											<span class="spec" v-if="food.spec">{{ food.spec }}</span>
+											<span class="attr" v-if="food.attr.length>0" v-for="value in food.attr"> / {{ value }}</span>
+										</p>
+									</div>
+									<div class="price">
+										<span>¥{{ food.count * food.price }}</span>
+									</div>
+									<div class="cartball-wrapper">
+										<cartball :food="food"></cartball>
+									</div>
+								</li>
+							</ul>
+							<div class="food" v-if="totalPackingFee > 0">
+								<div class="detail">餐盒</div>
+								<div class="price">{{ totalPackingFee }}</div>
+								<div class="cartball-wrapper"></div>
+							</div>
+						</div>
+					</scroll>
+				</div>
+			</transition>
 		</div>
+		<transition name="fade">
+			<div class="list-mask" v-show="listShow" @click="hideList"></div>
+		</transition>
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
-	import {mapGetters} from 'vuex';
+	import Cartball from 'base/cartball/cartball';
+	import Scroll from 'base/scroll/scroll';
+	import {mapGetters, mapMutations} from 'vuex';
 
 	export default {
 		data () {
@@ -49,7 +88,8 @@
 					{ show: false }
 				],
 				dropBalls: [],
-				cartFoodsList: []
+				cartFoodsList: [],
+				fold: true
 			};
 		},
 		computed: {
@@ -99,6 +139,26 @@
 				} else {
 					return '去结算';
 				}
+			},
+			// 餐盒总费用
+			totalPackingFee () {
+				let total = 0;
+				Object.values(this.shopCart).forEach((item) => {
+					Object.values(item).forEach((food) => {
+						Object.values(food).forEach((data) => {
+							total += data.packing_fee * data.count;
+						});
+					});
+				});
+				return total;
+			},
+			listShow () {
+				if (!this.totalCount) {
+					this.fold = true;
+					return false;
+				}
+				let show = !this.fold;
+				return show;
 			},
 			...mapGetters([
 				'selectedShopper',
@@ -155,17 +215,50 @@
 					el.style.display = 'none';
 					this.$refs.logoWrapper.style.animation = 'scale .4s';
 				}
-			}
+			},
+			toggleList () {
+				if (!this.totalCount) {
+					return;
+				}
+				this.fold = !this.fold;
+			},
+			hideList () {
+				this.fold = true;
+			},
+			empty () {
+				this.emptyCartFoods(this.$route.params.id);
+			},
+			...mapMutations({
+				'emptyCartFoods': 'EMPTY_CART_FOODS'
+			})
 		},
 		watch: {
+			// 监听购物车商品变化 更新购物车信息
 			shopCart (newshopCart) {
-				console.log(this.cartFoodsList);
+				this.cartFoodsList = [];
+				Object.values(newshopCart).forEach((item, categoryIndex) => {
+					Object.values(item).forEach((food, itemIndex) => {
+						Object.values(food).forEach((data) => {
+							data = Object.assign({}, data);
+							data.shopid = this.$route.params.id;
+							data.category_id = Object.keys(newshopCart)[categoryIndex];
+							data.item_id = Object.keys(item)[itemIndex];
+							this.cartFoodsList.push(data);
+						});
+					});
+				});
 			}
+		},
+		components: {
+			Cartball,
+			Scroll
 		}
 	};
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
+	@import '../../common/stylus/mixin.styl'
+
 	.shopcart
 		position: fixed
 		left: 0
@@ -251,6 +344,82 @@
 					height: 16px
 					border-radius: 50%
 					background: #3290e8
+		.shopcart-list
+			position: absolute
+			top: 0
+			left: 0
+			width: 100%
+			z-index: -1
+			transform: translate3d(0, -100%, 0)
+			&.fold-enter, &.fold-leave-active
+				transform: translate3d(0, 0, 0)
+			&.fold-enter-active, &.fold-leave-active
+				transition: all .4s
+			.list-header
+				height: 40px
+				line-height: 40px
+				padding: 0 12px
+				border-bottom: 1px solid #ddd
+				background: #eceff1
+				.title
+					padding-left: 5px
+					font-size: 16px
+					border-left: 3px solid #3190e8
+					color: #666
+				.empty
+					float: right
+					font-size: 13px
+					color: #666
+			.list-content
+				padding-left: 12px
+				max-height: 300px
+				overflow: hidden
+				background: #fff
+				.food
+					position: relative
+					display: flex
+					align-items: center
+					min-height: 40px
+					padding: 8px 0
+					border-1px(#eee)
+					.detail
+						flex: 6
+						.name
+							display: inline-block
+							vertical-align: middle
+							max-width: 175px
+							font-size: 16px
+							line-height: 20px
+							no-wrap()
+						.desc
+							line-height: 12px
+							font-size: 10px
+							color: #999
+							no-wrap()
+					.price
+						flex: 3
+						font-size: 16px
+						font-weight: 700
+						text-align: right
+						color: #f60
+					.cartball-wrapper
+						flex: 3
+						margin-right: 12px
+						margin-bottom: 6px
+						text-align: right
+	.list-mask
+		position: fixed;
+		top: 0
+		left: 0
+		width: 100%
+		height: 100%
+		z-index: 40
+		background: rgba(0, 0, 0, 0.4)
+		backdrop-filter: blur(10px)
+		&.fade-enter, &.fade-leave-active
+			opacity: 0
+		&.fade-enter-active, &.fade-leave-active
+			transition: all .4s
 	@keyframes scale
 		0%
 			transform: scale(1.2)

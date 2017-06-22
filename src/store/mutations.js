@@ -21,7 +21,8 @@ export default {
 				packing_fee: food.packing_fee,
 				stock: food.stock,
 				spec: food.spec,
-				attr: food.attr
+				attr: food.attr,
+				specfoods: food.specfoods
 			};
 		}
 		state.cartFoods = {...cart};
@@ -45,5 +46,10 @@ export default {
 			}
 			state.cartFoods = {...cart};
 		}
+	},
+	// 清空购物车
+	[types.EMPTY_CART_FOODS] (state, shopid) {
+		state.cartFoods[shopid] = null;
+		state.cartFoods = {...state.cartFoods};
 	}
 };
