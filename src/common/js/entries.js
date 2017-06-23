@@ -30,15 +30,6 @@ function insertStringImgUrl (imgurl) {
 }
 
 function substrLink (link) {
-	let ret = [];
-	let data = '';
-	let reg = /\[(\d+,\s)+\d+\]/g;
-	let matches = link.match(reg);
-	if (matches && matches.length > 1) {
-		ret = matches[1].replace(/^\[|\]$/g, '').split(', ');
-		for (var i = 0; i < ret.length; i++) {
-			data += '&restaurant_category_ids[]=' + ret[i];
-		};
-	}
-	return data;
+	let index = link.indexOf('?');
+	return link.substring(index + 1);
 }

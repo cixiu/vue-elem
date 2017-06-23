@@ -4,6 +4,9 @@
 			<li @click="selectItem(item)" class="item border-1px" v-for="item in shoppers">
 				<div class="logo">
 					<img width="60" height="60" @load="imgLoad" v-lazy="image(item)"/>
+					<div class="new-shopper" v-if="item.is_new">
+						<span class="new-logo">新店</span>
+					</div>
 				</div>
 				<div class="text">
 					<div class="title">
@@ -49,7 +52,9 @@
 		props: {
 			shoppers: {
 				type: Array,
-				default: []
+				default () {
+					return [];
+				}
 			},
 			hasMore: {
 				type: Boolean,
@@ -96,6 +101,25 @@
 				flex: 0 0 90px
 				width: 90px
 				padding: 15px
+				img
+					border-radius: 4px
+				.new-shopper
+					position: absolute
+					top: 0
+					left: 0
+					width: 32px
+					height: 32px
+					font-size: 9px
+					line-height: 13px
+					background: linear-gradient(135deg, #26ce61, #26ce61 50%, transparent 0)
+					.new-logo
+						display: block
+						position: absolute
+						top: 5px
+						left: 1px
+						font-weight: 700
+						color: #fff
+						transform: rotate(-45deg)
 			.text
 				flex: 1
 				padding: 15px 10px 15px 0

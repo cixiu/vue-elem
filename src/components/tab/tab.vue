@@ -4,7 +4,7 @@
 		<div class="slider-wrapper" v-if="entries.length">
 			<slider>
 				<div class="item-group-left">
-					<div class="item" v-for='item in entriesLeft'>
+					<div class="item" v-for='item in entriesLeft' @click="selectItem(item)">
 						<a href="javascrit:">
 							<img width="45" height="45" :src="item.image">
 						</a>
@@ -12,7 +12,7 @@
 					</div>
 				</div>
 				<div class="item-group-right">
-					<div class="item" v-for="item in entriesRight">
+					<div class="item" v-for="item in entriesRight" @click="selectItem(item)">
 						<a href="javascrit::">
 							<img width="45" height="45" :src="item.image">
 						</a>
@@ -26,17 +26,13 @@
 
 <script type="text/ecmascript-6">
 	import Slider from 'base/slider/slider';
-	import {getEntries} from 'api/entries';
-	import {createEntries} from 'common/js/entries';
 
 	export default {
-		data () {
-			return {
-				entries: []
-			};
-		},
-		created () {
-			this._getEntries();
+		props: {
+			entries: {
+				type: Array,
+				default: []
+			}
 		},
 		computed: {
 			entriesLeft () {
@@ -47,17 +43,8 @@
 			}
 		},
 		methods: {
-			_getEntries () {
-				getEntries().then((response) => {
-					this.entries = this._normalizeEntries(response[0].entries);
-				});
-			},
-			_normalizeEntries (list) {
-				let ret = [];
-				list.forEach((entriesData) => {
-					ret.push(createEntries(entriesData));
-				});
-				return ret;
+			selectItem (item) {
+				this.$emit('selectFood', item);
 			}
 		},
 		components: {

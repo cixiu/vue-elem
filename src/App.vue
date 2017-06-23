@@ -9,7 +9,7 @@
     >
       <div>
         <m-header></m-header>
-        <tab></tab>
+        <tab :entries="entries" @selectFood="selectFood"></tab>
         <split></split>
         <div class="recommend">
           <h1 class="recommend-shopper border-1px">推荐商家</h1>
@@ -17,9 +17,7 @@
         </div>
       </div>
     </scroll>
-    <transition name="slide">
-      <router-view></router-view>
-    </transition>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -30,12 +28,15 @@
   import Shopper from 'components/shopper/shopper';
   import Scroll from 'base/scroll/scroll';
   import {getShopperList} from 'api/shopper';
+  import {getEntries} from 'api/entries';
+  import {createEntries} from 'common/js/entries';
   import {mapMutations} from 'vuex';
 
   export default {
     data () {
       return {
         shoppers: [],
+        entries: [],
         hasMore: true,
         offset: 0,
         pullup: true
@@ -44,6 +45,7 @@
     created () {
       setTimeout(() => {
         this._getShopperList();
+        this._getEntries();
       }, 20);
     },
     methods: {
@@ -64,7 +66,14 @@
         this.$router.push({
           path: `/shop/id=${item.id}`
         });
+        console.log(2);
         this.setselectedShopper(item);
+      },
+      selectFood (item) {
+        this.$router.push({
+          path: `/food/#${item.link}`
+        });
+        this.setselectedEntries(item);
       },
       _getShopperList () {
         this.hasMore = true;
@@ -74,13 +83,26 @@
           this.shoppers = response;
         });
       },
+      _getEntries () {
+        getEntries().then((response) => {
+          this.entries = this._normalizeEntries(response[0].entries);
+        });
+      },
+      _normalizeEntries (list) {
+        let ret = [];
+        list.forEach((entriesData) => {
+          ret.push(createEntries(entriesData));
+        });
+        return ret;
+      },
       _checkMore (data) {
         if (!data.length) {
           this.hasMore = false;
         }
       },
       ...mapMutations({
-        setselectedShopper: 'SET_SELECTED_SHOPPER'
+        setselectedShopper: 'SET_SELECTED_SHOPPER',
+        setselectedEntries: 'SET_SELECTED_ENTRIES'
       })
     },
     // watch: {
@@ -98,7 +120,7 @@
   };
 </script>
 
-<style lang="stylus" ref="stylesheet/stylus">
+<style scoped lang="stylus" ref="stylesheet/stylus">
   @import './common/stylus/mixin.styl'
   
   #app
@@ -108,10 +130,10 @@
     bottom: 0
     left: 0
     overflow: hidden
-    &.slide-enter, .slide-leave-active
-      transform: translate3d(100%, 0, 0)
-    &.slide-enter-active, .slide-leave-active
-      transition: all 0.5s
+    // .slide-enter, .slide-leave-active
+    //   transform: translate3d(100%, 0, 0)
+    // .slide-enter-active, .slide-leave-active
+    //   transition: all 5s
     .app-content
       height: 100%
       overflow: hidden

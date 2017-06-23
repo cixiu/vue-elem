@@ -140,14 +140,12 @@
 			_getScores () {
 				getScores(this.shopid).then((response) => {
 					this.scores = response;
-					// console.log(this.scores);
 				});
 			},
 			// 获取评论标签
 			_getRatingsTags () {
 				getRatingsTags(this.shopid).then((response) => {
 					this.tags = response;
-					// console.log(this.ratings);
 				});
 			},
 			// 检查是否已经没有数据可以加载了

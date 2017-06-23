@@ -25,3 +25,18 @@ export function parseLocation (location) {
 		return matches[0].substr(3);
 	}
 }
+
+// 解析食品分类的link
+export function parseLink (link) {
+	let ret = [];
+	let data = '';
+	let reg = /\[(\d+,\s)+\d+\]/g;
+	let matches = link.match(reg);
+	if (matches && matches.length > 1) {
+		ret = matches[1].replace(/^\[|\]$/g, '').split(', ');
+		for (var i = 0; i < ret.length; i++) {
+			data += '&restaurant_category_ids[]=' + ret[i];
+		};
+	}
+	return data;
+}

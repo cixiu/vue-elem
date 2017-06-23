@@ -51,5 +51,9 @@ export default {
 	[types.EMPTY_CART_FOODS] (state, shopid) {
 		state.cartFoods[shopid] = null;
 		state.cartFoods = {...state.cartFoods};
+	},
+	// 选择进入的食品分类目录
+	[types.SET_SELECTED_ENTRIES] (state, entries) {
+		state.selectedEntries = entries;
 	}
 };

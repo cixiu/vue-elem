@@ -1,4 +1,5 @@
 <template>
+	<transition name="slide" mode="out-in">
 		<div class="shop">
 			<shop-header :shopid="shopid"></shop-header>
 			<div class="tab border-1px">
@@ -16,6 +17,7 @@
 				<ratings></ratings>
 			</div>
 		</div>
+	</transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -63,10 +65,10 @@
 		left: 0
 		z-index: 50
 		background: #fff
-		&.slide-enter, .slide-leave-active
+		&.slide-enter, &.slide-leave-active
 			transform: translate3d(100%, 0, 0)
-		&.slide-enter-active, .slide-leave-active
-			transition: all 0.5s
+		&.slide-enter-active, &.slide-leave-active
+			transition: all .5s
 		.tab
 			display: flex
 			height: 45px

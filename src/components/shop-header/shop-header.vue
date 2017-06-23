@@ -160,7 +160,7 @@
 		},
 		methods: {
 			back () {
-				this.$router.push('/');
+				this.$router.back();
 			},
 			showShopDetail () {
 				this.shopDetail = true;

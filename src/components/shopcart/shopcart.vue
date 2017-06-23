@@ -185,6 +185,7 @@
 						let rect = ball.el.getBoundingClientRect();
 						let x = rect.left - 29;
 						let y = -(window.innerHeight - rect.top - 27);
+						this.$refs.logoWrapper.style.display = '';
 						this.$refs.logoWrapper.style.animation = '';
 						el.style.WebkitTransform = `translate3d(0, ${y}px, 0)`;
 						el.style.transform = `translate3d(0, ${y}px, 0)`;

@@ -1,4 +1,5 @@
 export default {
 	selectedShopper: [],
-	cartFoods: {}
+	cartFoods: {},
+	selectedEntries: {}
 };
