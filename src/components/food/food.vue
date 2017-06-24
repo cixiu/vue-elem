@@ -4,8 +4,8 @@
 			<div class="header">
 				<m-title :title-name="targetName"></m-title>
 			</div>
-			<div class="filter-wrapper border-1px">
-				<m-filter></m-filter>
+			<div class="filter-wrapper">
+				<m-filter @select="selectShoppers"></m-filter>
 			</div>
 			<scroll 
 						 	class="shopper-wrapper"
@@ -36,7 +36,9 @@
 				keyword: null,
 				shoppers: [],
 				pullup: true,
-				hasMore: true
+				hasMore: true,
+				category_id: null,              // 分类选择的category的id
+				order_by: null                    // 排序选择的id
 			};
 		},
 		created () {
@@ -63,17 +65,31 @@
 					return;
 				}
 				this.offset += 20;
-				getFoodShopperList(this.offset, this.keyword, this.target).then((response) => {
+				getFoodShopperList(this.offset, this.keyword, null, this.category_id, this.order_by).then((response) => {
 					this.shoppers = this.shoppers.concat(response);
 					this._checkMore(response);
 				});
 			},
+			// 点击商家进入商家页面
 			selectItem (item) {
 				this.$router.push({
           path: `/shop/id=${item.id}`
         });
-        console.log(1);
         this.setselectedShopper(item);
+			},
+			// 分类选中的食品列表数据获取
+			selectShoppers (item) {
+				this.offset = 0;
+				this.keyword = null;
+				if (item.name === '全部商家') {
+					this.category_id = null;
+				} else {
+					this.category_id = (item.id || item.id === 0) ? item.id : this.category_id;
+				}
+				this.order_by = (item.order_by || item.order_by === 0) ? item.order_by : this.order_by;
+				getFoodShopperList(this.offset, this.keyword, null, this.category_id, this.order_by).then((response) => {
+					this.shoppers = response;
+				});
 			},
 			_getFoodShopperList () {
 				this.hasMore = true;
@@ -119,21 +135,22 @@
 		&.fade-enter-active, &.fade-leave-active
 			transition: all .3s
 		.header
-			position: absolute
+			position: fixed
 			top: 0
 			left: 0
 			right: 0
 			width: 100%
 			height: 44px
+			z-index: 999
 		.filter-wrapper
-			position: absolute
+			position: fixed
 			top: 44px
 			left: 0
 			right: 0
 			width: 100%
 			height: 40px
-			z-index: 100
-			border-1px(#ddd)
+			z-index: 999
+			border-bottom: 1px solid #ddd
 		.shopper-wrapper
 			position: fixed
 			top: 85px

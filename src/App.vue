@@ -66,7 +66,6 @@
         this.$router.push({
           path: `/shop/id=${item.id}`
         });
-        console.log(2);
         this.setselectedShopper(item);
       },
       selectFood (item) {
@@ -130,10 +129,6 @@
     bottom: 0
     left: 0
     overflow: hidden
-    // .slide-enter, .slide-leave-active
-    //   transform: translate3d(100%, 0, 0)
-    // .slide-enter-active, .slide-leave-active
-    //   transition: all 5s
     .app-content
       height: 100%
       overflow: hidden

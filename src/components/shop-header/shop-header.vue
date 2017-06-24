@@ -285,9 +285,9 @@
 			z-index: 60
 			background: #fff
 			color: #333
-			&.slide-enter, .slide-leave-active
+			&.slide-enter, &.slide-leave-active
 				transform: translate3d(100%, 0, 0)
-			&.slide-enter-active, .slide-leave-active
+			&.slide-enter-active, &.slide-leave-active
 				transition: all 0.5s
 			.title
 				position: fixed

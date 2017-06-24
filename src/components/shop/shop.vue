@@ -65,10 +65,10 @@
 		left: 0
 		z-index: 50
 		background: #fff
-		&.slide-enter, &.slide-leave-active
-			transform: translate3d(100%, 0, 0)
-		&.slide-enter-active, &.slide-leave-active
-			transition: all .5s
+		// &.slide-enter, &.slide-leave-active
+		// 	transform: translate3d(100%, 0, 0)
+		// &.slide-enter-active, &.slide-leave-active
+		// 	transition: all .5s
 		.tab
 			display: flex
 			height: 45px
