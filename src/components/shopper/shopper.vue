@@ -28,7 +28,7 @@
 					<div class="delivery">
 						<div class="price">
 							<span class="min-price">￥{{ item.float_minimum_order_amount }}起送 /</span>
-							<span class="delivery-price">配送费￥{{ item.float_delivery_fee }} /</span>
+							<span class="delivery-price">{{ item.piecewise_agent_fee.tips }} /</span>
 							<span class="average-cost">{{ item.average_cost }}</span>
 						</div>
 						<div class="distance-time">
@@ -61,9 +61,6 @@
 				default: false
 			}
 		},
-		computed: {
-
-		},
 		methods: {
 			image (item) {
 				return parseImage(item.image_path);
@@ -76,6 +73,11 @@
 			},
 			selectItem (item) {
 				this.$emit('select', item);
+			}
+		},
+		filters: {
+			normalizePrice (value) {
+				return Math.round(value * 10) / 10;
 			}
 		},
 		components: {

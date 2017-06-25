@@ -49,10 +49,10 @@
 			border-1px(#ddd)
 			.icon
 				display: inline-block
-				vertical-align: middle
+				vertical-align: top
 				margin-left: -25px
 				margin-right: 10px
-				margin-bottom: 10px
+				margin-top: 18px
 				font-size: 15px
 				&.icon-sort
 					color: #3b87c8

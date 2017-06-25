@@ -1,7 +1,7 @@
 <template>
 	<div class="filter" ref="filter">
 		<div class="filter-title">
-			<div class="filter-item" :class="{open:showFlag && currentIndex === index}" v-for="(filter,index) in filters" @click="open(index)">
+			<div class="filter-item" :class="{open:showFlag && currentIndex === index, selected: hasSelected && index === 2}" v-for="(filter,index) in filters" @click="open(index)">
 				<span class="name">{{ filter }}</span>
 				<i class="icon icon-bottom-arrow2"></i>
 			</div>
@@ -40,8 +40,8 @@
 				filters: ['分类', '排序', '筛选'],
 				currentIndex: -1,
 				showFlag: false,
-				view: '',
-				index: 0
+				index: 0,
+				hasSelected: false
 			};
 		},
 		methods: {
@@ -59,7 +59,12 @@
 			},
 			selectItem (item) {
 				this.showFlag = false;
-				this.filters[this.index] = item.name;
+				if (item.name) {
+					this.filters[this.index] = item.name;
+				}
+				if (item.hasSelected !== undefined) {
+					this.hasSelected = item.hasSelected;
+				}
 				this.$emit('select', item);
 			}
 		},
@@ -86,7 +91,7 @@
 			font-size: 13px
 			text-align: center
 			color: #666
-			&.open
+			&.open, &.selected
 				color: #3190e8
 				.icon
 					color: #3190e8

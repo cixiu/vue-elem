@@ -38,7 +38,9 @@
 				pullup: true,
 				hasMore: true,
 				category_id: null,              // 分类选择的category的id
-				order_by: null                    // 排序选择的id
+				order_by: null,                    // 排序选择的id
+				deliver_mode: null,
+				support_ids: null
 			};
 		},
 		created () {
@@ -65,7 +67,7 @@
 					return;
 				}
 				this.offset += 20;
-				getFoodShopperList(this.offset, this.keyword, null, this.category_id, this.order_by).then((response) => {
+				getFoodShopperList(this.offset, this.keyword, null, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
 					this.shoppers = this.shoppers.concat(response);
 					this._checkMore(response);
 				});
@@ -87,7 +89,9 @@
 					this.category_id = (item.id || item.id === 0) ? item.id : this.category_id;
 				}
 				this.order_by = (item.order_by || item.order_by === 0) ? item.order_by : this.order_by;
-				getFoodShopperList(this.offset, this.keyword, null, this.category_id, this.order_by).then((response) => {
+				this.delivery_mode = (item.delivery_mode || item.delivery_mode === 0 || item.delivery_mode === null) ? item.delivery_mode : this.delivery_mode;
+				this.support_ids = item.support_ids ? item.support_ids : this.support_ids;
+				getFoodShopperList(this.offset, this.keyword, null, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
 					this.shoppers = response;
 				});
 			},

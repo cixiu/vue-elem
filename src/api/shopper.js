@@ -20,11 +20,19 @@ export function getShopperList (offset) {
 	});
 }
 
-export function getFoodShopperList (offset, keyword, link, category_id, order_by) {
+export function getFoodShopperList (offset, keyword, link, category_id, order_by, delivery_mode, support_ids) {
 	let url = `https://mainsite-restapi.ele.me/shopping/restaurants`;
 	if (link) {
 		link = parseLink(link);
 		url = `https://mainsite-restapi.ele.me/shopping/restaurants?${link}`;
+	}
+
+	let supports = '';
+	if (support_ids) {
+		support_ids.forEach((item) => {
+			supports += `support_ids[]=${item}&`;
+		});
+		url = `https://mainsite-restapi.ele.me/shopping/restaurants?${supports}`;
 	}
 
 	let data = {
@@ -45,6 +53,12 @@ export function getFoodShopperList (offset, keyword, link, category_id, order_by
 	if (order_by || order_by === 0) {
 		data = Object.assign({}, data, {
 			'order_by': order_by
+		});
+	}
+
+	if (delivery_mode || delivery_mode === 0) {
+		data = Object.assign({}, data, {
+			'delivery_mode[]': delivery_mode
 		});
 	}
 
