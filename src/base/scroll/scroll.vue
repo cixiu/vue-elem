@@ -40,6 +40,14 @@
 			scrollEnd: {
 				type: Boolean,
 				default: false
+			},
+			scrollX: {
+				type: Boolean,
+				default: true
+			},
+			scrollY: {
+				type: Boolean,
+				default: true
 			}
 		},
 		mounted () {
@@ -55,7 +63,9 @@
 				this.scroll = new BScroll(this.$refs.wrapper, {
 					probeType: this.probeType,
 					click: this.click,
-					bounce: this.bounce
+					bounce: this.bounce,
+					scrollX: this.scrollX,
+					scrollY: this.scrollY
 				});
 				// 如果要监听滚动
 				if (this.listenScroll) {

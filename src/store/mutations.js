@@ -55,5 +55,17 @@ export default {
 	// 选择进入的食品分类目录
 	[types.SET_SELECTED_ENTRIES] (state, entries) {
 		state.selectedEntries = entries;
+	},
+	// 设置纬度
+	[types.SET_LATITUDE] (state, latitude) {
+		state.latitude = latitude;
+	},
+	// 设置经度
+	[types.SET_LONGITUDE] (state, longitude) {
+		state.longitude = longitude;
+	},
+	// 设置geohash
+	[types.SET_GEOHASH] (state, geohash) {
+		state.geohash = geohash;
 	}
 };

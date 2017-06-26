@@ -1,5 +1,8 @@
 export default {
 	selectedShopper: [],
 	cartFoods: {},
-	selectedEntries: {}
+	selectedEntries: {},
+	latitude: null,
+	longitude: null,
+	geohash: null
 };

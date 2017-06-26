@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <geo-position @goback="setGPS" v-show="showFlagGPS"></geo-position>
     <scroll 
             class="app-content" 
             :data="shoppers" 
@@ -8,7 +9,7 @@
             @scrollToEnd="getShopperMoreList"
     >
       <div>
-        <m-header></m-header>
+        <m-header @setGPS="setGPS"></m-header>
         <tab :entries="entries" @selectFood="selectFood"></tab>
         <split></split>
         <div class="recommend">
@@ -27,6 +28,7 @@
   import Split from 'base/split/split';
   import Shopper from 'components/shopper/shopper';
   import Scroll from 'base/scroll/scroll';
+  import GeoPosition from 'components/geo-position/geo-position';
   import {getShopperList} from 'api/shopper';
   import {getEntries} from 'api/entries';
   import {createEntries} from 'common/js/entries';
@@ -39,7 +41,8 @@
         entries: [],
         hasMore: true,
         offset: 0,
-        pullup: true
+        pullup: true,
+        showFlagGPS: false
       };
     },
     created () {
@@ -73,6 +76,9 @@
           path: `/food/#${item.link}`
         });
         this.setselectedEntries(item);
+      },
+      setGPS () {
+        this.showFlagGPS = !this.showFlagGPS;
       },
       _getShopperList () {
         this.hasMore = true;
@@ -114,7 +120,8 @@
       Tab,
       Split,
       Shopper,
-      Scroll
+      Scroll,
+      GeoPosition
     }
   };
 </script>

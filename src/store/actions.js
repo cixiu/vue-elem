@@ -1,10 +1,9 @@
 import * as types from './mutations-types';
 
 export default {
-	selectSeller ({commit, state}, shopper) {
-		commit(types.SET_SELECTED_SHOPPER, shopper);
-	},
-	addCart ({commit}, foods) {
-		commit(types.SET_CART_FOODS, foods);
+	setGeoPosition ({state, commit}, {latitude, longitude, geohash}) {
+		commit(types.SET_LATITUDE, latitude);
+		commit(types.SET_LONGITUDE, longitude);
+		commit(types.SET_GEOHASH, geohash);
 	}
 };
