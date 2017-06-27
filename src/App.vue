@@ -32,7 +32,7 @@
   import {getShopperList} from 'api/shopper';
   import {getEntries} from 'api/entries';
   import {createEntries} from 'common/js/entries';
-  import {mapMutations} from 'vuex';
+  import {mapGetters, mapMutations} from 'vuex';
 
   export default {
     data () {
@@ -51,16 +51,22 @@
         this._getEntries();
       }, 20);
     },
+    computed: {
+      ...mapGetters([
+        'latitude',
+        'longitude'
+      ])
+    },
     methods: {
       refresh () {
         this.$refs.scroll.refresh();
       },
       getShopperMoreList () {
-        if (!this.hasMore) {
+        if (!this.hasMore || !this.latitude || !this.longitude) {
           return;
         }
         this.offset += 20;
-        getShopperList(this.offset).then((response) => {
+        getShopperList(this.latitude, this.longitude, this.offset).then((response) => {
           this.shoppers = this.shoppers.concat(response);
           this._checkMore(response);
         });
@@ -81,15 +87,21 @@
         this.showFlagGPS = !this.showFlagGPS;
       },
       _getShopperList () {
+        if (!this.latitude || !this.longitude) {
+          return;
+        }
         this.hasMore = true;
         this.offset = 0;
         this.$refs.scroll.scrollTo(0, 0);
-        getShopperList(this.offset).then((response) => {
+        getShopperList(this.latitude, this.longitude, this.offset).then((response) => {
           this.shoppers = response;
         });
       },
       _getEntries () {
-        getEntries().then((response) => {
+        if (!this.latitude || !this.longitude) {
+          return;
+        }
+        getEntries(this.latitude, this.longitude).then((response) => {
           this.entries = this._normalizeEntries(response[0].entries);
         });
       },
@@ -110,11 +122,15 @@
         setselectedEntries: 'SET_SELECTED_ENTRIES'
       })
     },
-    // watch: {
-    //   '$route' () {
-    //     window.location.reload();
-    //   }
-    // },
+    watch: {
+      // '$route' () {
+      //   window.location.reload();
+      // }
+      latitude () {
+        this._getEntries();
+        this._getShopperList();
+      }
+    },
     components: {
       MHeader,
       Tab,

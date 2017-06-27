@@ -1,12 +1,12 @@
 import axios from 'axios';
 import {parseLink} from 'common/js/util';
 
-export function getShopperList (offset) {
+export function getShopperList (latitude, longitude, offset) {
 	const url = 'https://mainsite-restapi.ele.me/shopping/restaurants';
 
 	const data = {
-		latitude: 28.194844,
-		longitude: 113.011618,
+		latitude,
+		longitude,
 		offset,
 		limit: 20,
 		'extras[]': 'activities',
@@ -20,7 +20,7 @@ export function getShopperList (offset) {
 	});
 }
 
-export function getFoodShopperList (offset, keyword, link, category_id, order_by, delivery_mode, support_ids) {
+export function getFoodShopperList (latitude, longitude, offset, keyword, link, category_id, order_by, delivery_mode, support_ids) {
 	let url = `https://mainsite-restapi.ele.me/shopping/restaurants`;
 	if (link) {
 		link = parseLink(link);
@@ -36,8 +36,8 @@ export function getFoodShopperList (offset, keyword, link, category_id, order_by
 	}
 
 	let data = {
-		latitude: 28.194844,
-		longitude: 113.011618,
+		latitude,
+		longitude,
 		keyword,
 		offset,
 		limit: 20,

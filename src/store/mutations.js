@@ -67,5 +67,9 @@ export default {
 	// 设置geohash
 	[types.SET_GEOHASH] (state, geohash) {
 		state.geohash = geohash;
+	},
+	// 设置搜索历史
+	[types.SET_SEARCH_HISTORY] (state, searches) {
+		state.searchHistory = searches;
 	}
 };

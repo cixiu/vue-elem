@@ -155,7 +155,9 @@
 				return this.shopper.opening_hours[0].replace(re, '-');
 			},
 			...mapGetters([
-				'selectedShopper'
+				'selectedShopper',
+				'latitude',
+				'longitude'
 			])
 		},
 		methods: {
@@ -181,7 +183,7 @@
 				return parseImage(imageHash);
 			},
 			_getShop () {
-				getShop(this.shopid).then((response) => {
+				getShop(this.latitude, this.longitude, this.shopid).then((response) => {
 					this.shopper = response;
 					this.avatar = parseImage(this.shopper.image_path);
 					this.setselectedShopper(this.shopper);

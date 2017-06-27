@@ -14,7 +14,7 @@
 				<img width="27" height="27" :src="parseImage(weather.image_hash)">
 			</div>
 		</div>
-		<div class="search-btn">
+		<div class="search-btn" @click="enterSearch">
 			<input class="text" type="text" placeholder="搜索商家、商品">
 		</div>
 		<scroll class="hot-search" :data="hotSearch" :scroll-y="false" v-show="hotSearch.length">
@@ -24,6 +24,7 @@
 				</a>
 			</div>
 		</scroll>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -60,10 +61,17 @@
 				return parseImage(imageHase);
 			},
 			selectItem (search, index) {
-				console.log(index);
+				this.$router.push({
+					path: `/search/shop?keyword=${search.word}`
+				});
 			},
 			setGeoPos () {
 				this.$emit('setGPS');
+			},
+			enterSearch () {
+				this.$router.push({
+					path: '/search'
+				});
 			},
 			_getGeography () {
 				if (!this.latitude || !this.longitude) {

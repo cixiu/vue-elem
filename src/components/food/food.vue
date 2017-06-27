@@ -57,7 +57,9 @@
 				return '';
 			},
 			...mapGetters([
-				'selectedEntries'
+				'selectedEntries',
+				'latitude',
+				'longitude'
 			])
 		},
 		methods: {
@@ -67,7 +69,7 @@
 					return;
 				}
 				this.offset += 20;
-				getFoodShopperList(this.offset, this.keyword, null, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
+				getFoodShopperList(this.latitude, this.longitude, this.offset, this.keyword, null, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
 					this.shoppers = this.shoppers.concat(response);
 					this._checkMore(response);
 				});
@@ -91,14 +93,14 @@
 				this.order_by = (item.order_by || item.order_by === 0) ? item.order_by : this.order_by;
 				this.delivery_mode = (item.delivery_mode || item.delivery_mode === 0 || item.delivery_mode === null) ? item.delivery_mode : this.delivery_mode;
 				this.support_ids = item.support_ids ? item.support_ids : this.support_ids;
-				getFoodShopperList(this.offset, this.keyword, null, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
+				getFoodShopperList(this.latitude, this.longitude, this.offset, this.keyword, null, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
 					this.shoppers = response;
 				});
 			},
 			_getFoodShopperList () {
 				this.hasMore = true;
 				this.offset = 0;
-				getFoodShopperList(this.offset, this.keyword, this.target).then((response) => {
+				getFoodShopperList(this.latitude, this.longitude, this.offset, this.keyword, this.target).then((response) => {
 					this.shoppers = response;
 				});
 			},

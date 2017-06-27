@@ -19,6 +19,7 @@
 <script type="text/ecmascript-6">
 	import {getCategory} from 'api/category';
 	import {parseImage} from 'common/js/util';
+	import {mapGetters} from 'vuex';
 
 	export default {
 		data () {
@@ -30,6 +31,12 @@
 		},
 		created () {
 			this._getCategory();
+		},
+		computed: {
+			...mapGetters([
+				'latitude',
+				'longitude'
+			])
 		},
 		methods: {
 			selectCategory (item, index) {
@@ -47,7 +54,7 @@
 				return parseImage(imageHash);
 			},
 			_getCategory () {
-				getCategory().then((response) => {
+				getCategory(this.latitude, this.longitude).then((response) => {
 					this.categorys = response;
 				});
 			}

@@ -1,11 +1,11 @@
 import axios from 'axios';
 // 获取商家数据
-export function getShop (id) {
+export function getShop (latitude, longitude, id) {
 	const url = `https://mainsite-restapi.ele.me/shopping/restaurant/${id}?extras[]=activities&extras[]=albums&extras[]=license&extras[]=identification`;
 
 	const data = {
-		latitude: 28.194844,
-		longitude: 113.011618
+		latitude,
+		longitude
 	};
 
 	return axios.get(url, {

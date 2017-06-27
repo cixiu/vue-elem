@@ -31,6 +31,7 @@
 
 <script type="text/ecmascript-6">
 	import {getDeliveryMode, getAttributes} from 'api/filter';
+	import {mapGetters} from 'vuex';
 
 	export default {
 		data () {
@@ -57,7 +58,11 @@
 					count += Number(item.flag);
 				});
 				return count;
-			}
+			},
+			...mapGetters([
+				'latitude',
+				'longitude'
+			])
 		},
 		methods: {
 			selectMode (mode, index) {
@@ -102,12 +107,12 @@
 				this.selectedItem = Object.assign({}, this.selectedItem);
 			},
 			_getDeliveryMode () {
-				getDeliveryMode().then((response) => {
+				getDeliveryMode(this.latitude, this.longitude).then((response) => {
 					this.deliveryMode = response;
 				});
 			},
 			_getAttributes () {
-				getAttributes().then((response) => {
+				getAttributes(this.latitude, this.longitude).then((response) => {
 					this.attributes = response;
 				});
 			}

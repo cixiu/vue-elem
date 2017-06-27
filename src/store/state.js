@@ -1,8 +1,11 @@
+import {localPosition, localSearch} from 'common/js/cache';
+
 export default {
 	selectedShopper: [],
 	cartFoods: {},
 	selectedEntries: {},
-	latitude: null,
-	longitude: null,
-	geohash: null
+	latitude: localPosition().latitude,
+	longitude: localPosition().longitude,
+	geohash: localPosition().geohash,
+	searchHistory: localSearch()
 };

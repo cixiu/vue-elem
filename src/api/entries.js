@@ -2,12 +2,12 @@
 // import {options} from 'api/config';
 import axios from 'axios';
 
-export function getEntries () {
+export function getEntries (latitude, longitude) {
 	const url = '/api/getEntries';
 
 	const data = {
-		'latitude': 28.194844,
-		'longitude': 113.011618,
+		latitude,
+		longitude,
 		'templates[]': 'main_template'
 	};
 

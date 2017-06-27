@@ -56,7 +56,6 @@
 			search () {
 				search(this.query).then((response) => {
 					this.result = response;
-					console.log(this.result);
 				});
 			},
 			blur () {

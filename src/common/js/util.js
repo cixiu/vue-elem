@@ -1,5 +1,8 @@
 // 解析图片地址
 export function parseImage (imgurl) {
+	if (!imgurl) {
+		return;
+	}
 	const img = insertStringImgUrl(imgurl);
 	return `//fuss10.elemecdn.com/${img}?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/`;
 };
@@ -12,6 +15,8 @@ function insertStringImgUrl (imgurl) {
 	let reg = /(png)/g;
 	if (reg.test(newImgurl)) {
 		return newImgurl + '.png';
+	} else if (/(jpg)/g.test(newImgurl)) {
+		return newImgurl + '.jpg';
 	} else {
 		return newImgurl + '.jpeg';
 	}
