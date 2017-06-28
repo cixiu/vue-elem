@@ -39,13 +39,15 @@
 				</div>
 			</li>
 		</ul>
-		<loading v-show="hasMore"></loading>
+		<loading v-if="hasMore"></loading>
+		<no-result v-if="!hasMore"></no-result>
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
 	import Star from 'base/star/star';
 	import Loading from 'base/loading/loading';
+	import NoResult from 'base/no-result/no-result';
 	import {parseImage} from 'common/js/util';
 
 	export default {
@@ -82,7 +84,8 @@
 		},
 		components: {
 			Star,
-			Loading
+			Loading,
+			NoResult
 		}
 	};
 </script>
@@ -177,7 +180,8 @@
 						font-size: 12px
 						color: #666
 					.delivery-mode
-						display: inline-block
+						display: flex
+						align-items: center
 						float: right
 						font-size: 0
 						text-align: center

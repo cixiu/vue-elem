@@ -32,7 +32,7 @@
 	import Scroll from 'base/scroll/scroll';
 	import {getGeography, getWeather, getHotSearch} from 'api/m-header';
 	import {parseImage} from 'common/js/util';
-	import {mapGetters} from 'vuex';
+	import {mapGetters, mapMutations} from 'vuex';
 
 	export default {
 		data () {
@@ -50,7 +50,8 @@
 		computed: {
 			...mapGetters([
 				'latitude',
-				'longitude'
+				'longitude',
+				'showFlagGPS'
 			])
 		},
 		methods: {
@@ -66,7 +67,8 @@
 				});
 			},
 			setGeoPos () {
-				this.$emit('setGPS');
+				// this.$emit('setGPS');
+				this.setGPSShow(!this.showFlagGPS);
 			},
 			enterSearch () {
 				this.$router.push({
@@ -96,7 +98,10 @@
 				getHotSearch(this.latitude, this.longitude).then((response) => {
 					this.hotSearch = response;
 				});
-			}
+			},
+			...mapMutations({
+				'setGPSShow': 'SET_SHOWFLAGGPS'
+			})
 		},
 		watch: {
 			latitude () {

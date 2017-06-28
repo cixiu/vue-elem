@@ -68,6 +68,7 @@
 				</div>
 			</div>
 			<loading v-if="hasMore"></loading>
+			<no-result v-if="!hasMore"></no-result>
 		</div>
 	</scroll>
 </template>
@@ -77,6 +78,7 @@
 	import Split from 'base/split/split';
 	import Scroll from 'base/scroll/scroll';
 	import Loading from 'base/loading/loading';
+	import NoResult from 'base/no-result/no-result';
 	import {parseImage} from 'common/js/util';
 	import {getRatings, getScores, getRatingsTags} from 'api/shop';
 
@@ -170,7 +172,8 @@
 			Star,
 			Split,
 			Scroll,
-			Loading
+			Loading,
+			NoResult
 		}
 	};
 </script>

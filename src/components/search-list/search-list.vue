@@ -15,6 +15,7 @@
 						@scrollToEnd="getSearchFoodsMore"
 						:before-scroll="beforeScroll"
 						@beforeScroll="blur"
+						ref="shopperWrapper"
 		>
 			<shopper :shoppers="shoppers" :has-more="hasMore" @select="selectFood"></shopper>
 		</scroll>
@@ -85,6 +86,7 @@
 				});
 			},
 			selectShoppers (item) {
+				this.$refs.shopperWrapper.scrollTo(0, 0);
 				this.offset = 0;
 				if (item.name === '全部商家') {
 					this.category_id = null;
@@ -96,9 +98,16 @@
 				this.support_ids = item.support_ids ? item.support_ids : this.support_ids;
 				getSearchFoods(this.latitude, this.longitude, this.offset, this.query, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
 					this.shoppers = [];
+					if (!response['0']) {
+						this.hasMore = false;
+						return;
+					}
 					response['0'].restaurant_with_foods.forEach((item) => {
 						this.shoppers.push(item.restaurant);
 					});
+					if (this.shoppers.length < 20) {
+						this.hasMore = false;
+					}
 				});
 			},
 			selectFood (item) {
@@ -108,10 +117,16 @@
         this.setselectedShopper(item);
 			},
 			_getSearchFoods () {
+				console.log(this.$refs.shopperWrapper);
+				// this.$refs.shopperWrapper.scrollTo(0, 0);
 				getSearchFoods(this.latitude, this.longitude, this.offset, this.query).then((response) => {
 					response['0'].restaurant_with_foods.forEach((item) => {
 						this.shoppers.push(item.restaurant);
 					});
+					if (this.shoppers.length < 20) {
+						this.hasMore = false;
+						return;
+					}
 				});
 			},
 			...mapMutations({

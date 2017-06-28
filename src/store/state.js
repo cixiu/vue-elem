@@ -7,5 +7,6 @@ export default {
 	latitude: localPosition().latitude,
 	longitude: localPosition().longitude,
 	geohash: localPosition().geohash,
-	searchHistory: localSearch()
+	searchHistory: localSearch(),
+	showFlagGPS: false
 };

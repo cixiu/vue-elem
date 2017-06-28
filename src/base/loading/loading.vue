@@ -20,11 +20,13 @@
 
 	.loading
 		width: 100%
+		line-height: 40px
 		text-align: center
+		img
+			vertical-align: middle
 		.desc
 			display: inline-block
 			margin-left: 5px
-			line-height: 24px
-			font-size: 12px
+			font-size: 14px
 			color: #333
 </style>

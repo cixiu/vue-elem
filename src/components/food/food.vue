@@ -12,6 +12,7 @@
 						 	:data="shoppers"
 						 	:pullup="pullup"
 						 	@scrollToEnd="getFoodShopperMore"
+						 	ref="shopperWrapper"
 			>
 				<shopper :shoppers="shoppers" :has-more="hasMore" @select="selectItem"></shopper>
 			</scroll>
@@ -65,13 +66,15 @@
 		methods: {
 			// 加载更多
 			getFoodShopperMore () {
-				if (!this.hasMore) {
+				if (!this.hasMore || this.stopShowMore) {
 					return;
 				}
 				this.offset += 20;
+				this.stopShowMore = true;
 				getFoodShopperList(this.latitude, this.longitude, this.offset, this.keyword, null, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
 					this.shoppers = this.shoppers.concat(response);
 					this._checkMore(response);
+					this.stopShowMore = false;
 				});
 			},
 			// 点击商家进入商家页面
@@ -83,6 +86,7 @@
 			},
 			// 分类选中的食品列表数据获取
 			selectShoppers (item) {
+				this.$refs.shopperWrapper.scrollTo(0, 0);
 				this.offset = 0;
 				this.keyword = null;
 				if (item.name === '全部商家') {
@@ -95,6 +99,7 @@
 				this.support_ids = item.support_ids ? item.support_ids : this.support_ids;
 				getFoodShopperList(this.latitude, this.longitude, this.offset, this.keyword, null, this.category_id, this.order_by, this.delivery_mode, this.support_ids).then((response) => {
 					this.shoppers = response;
+					this._checkMore(response);
 				});
 			},
 			_getFoodShopperList () {

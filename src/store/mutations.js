@@ -71,5 +71,9 @@ export default {
 	// 设置搜索历史
 	[types.SET_SEARCH_HISTORY] (state, searches) {
 		state.searchHistory = searches;
+	},
+	// 设置gps页面的显示和隐藏
+	[types.SET_SHOWFLAGGPS] (state, showFlagGPS) {
+		state.showFlagGPS = showFlagGPS;
 	}
 };
