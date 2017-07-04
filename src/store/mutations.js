@@ -1,4 +1,5 @@
 import * as types from './mutations-types';
+import {saveUserInfo, clearUserInfo} from 'common/js/cache';
 
 export default {
 	[types.SET_SELECTED_SHOPPER] (state, shopper) {
@@ -75,5 +76,15 @@ export default {
 	// 设置gps页面的显示和隐藏
 	[types.SET_SHOWFLAGGPS] (state, showFlagGPS) {
 		state.showFlagGPS = showFlagGPS;
+	},
+	// 设置登录的用户信息
+	[types.SET_USERINFO] (state, userInfo) {
+		state.userInfo = userInfo;
+		saveUserInfo(userInfo);
+	},
+	// 清空用户信息
+	[types.EMPTY_USERINFO] (state) {
+		state.userInfo = null;
+		clearUserInfo();
 	}
 };

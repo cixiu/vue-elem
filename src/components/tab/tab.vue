@@ -57,6 +57,7 @@
 	.tab
 		width: 100%
 		height: 177px
+		background: #fff
 		.slider-wrapper
 			position: relative
 			overflow: hidden

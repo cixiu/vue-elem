@@ -95,6 +95,7 @@
 			},
 			refresh () {
 				this.scroll && this.scroll.refresh();
+				// console.log(this.$refs.wrapper.children[0].offsetHeight);
 			},
 			scrollToElement () {
 				this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments);

@@ -1,4 +1,4 @@
-import {localPosition, localSearch} from 'common/js/cache';
+import {localPosition, localSearch, localUserInfo} from 'common/js/cache';
 
 export default {
 	selectedShopper: [],
@@ -8,5 +8,6 @@ export default {
 	longitude: localPosition().longitude,
 	geohash: localPosition().geohash,
 	searchHistory: localSearch(),
-	showFlagGPS: false
+	showFlagGPS: false,
+	userInfo: localUserInfo()
 };

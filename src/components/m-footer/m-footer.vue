@@ -39,7 +39,7 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
 	.footer
-		position: absolute
+		position: fixed
 		right: 0
 		bottom: 0
 		left: 0

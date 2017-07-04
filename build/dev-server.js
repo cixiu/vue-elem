@@ -8,6 +8,8 @@ if (!process.env.NODE_ENV) {
 var opn = require('opn')
 var path = require('path')
 var express = require('express')
+var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
@@ -22,6 +24,19 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+// var allowCrossDomain = function (req, res, next) {
+//   res.header({
+//     'Access-Control-Allow-Credentials': true,
+//     'Access-Control-Allow-Headers': 'Content-Type, X-ELEME-USERID, X-Eleme-RequestID, X-Shard',
+//     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+//     'Access-Control-Allow-Origin': '*'
+//   })
+//   next()
+// }
+
+// app.use(allowCrossDomain)
+app.use(bodyParser.json())
+app.use(cookieParser())
 // 服务端代理请求url
 var apiRouter = express.Router()
 
@@ -37,6 +52,73 @@ apiRouter.get('/getEntries', function (req, res) {
     res.json(response.data)
   }).catch((e) => {
     console.log(e)
+  })
+})
+
+apiRouter.post('/getCaptchasCode', function (req, res, next) {
+  var url = 'https://mainsite-restapi.ele.me/v1/captchas';
+  // res.header('Access-Control-Allow-Origin', 'https://h5.ele.me')
+  axios.post(url, null, {
+    withCredentials: true
+  }).then((response) => {
+    // console.log(response)
+    // console.log(req.cookies)
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
+
+apiRouter.get('/getVerifyCode', function (req, res, next) {
+  var url = 'https://mainsite-restapi.ele.me/v4/mobile/verify_code/send';
+  // res.header('Access-Control-Allow-Origin', 'https://h5.ele.me')
+  axios.post(url, req.query, {
+    headers: {
+      referer: 'https://h5.ele.me/msite/',
+      host: 'mainsite-restapi.ele.me'
+    },
+    withCredentials: true
+  }).then((response) => {
+    console.log(response)
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e.response)
+    res.status(400).send(e.response.data)
+  })
+})
+
+apiRouter.get('/getLoginIn', function (req, res) {
+  var url = 'https://mainsite-restapi.ele.me/v1/login/app_mobile';
+  // res.header('Access-Control-Allow-Origin', 'https://h5.ele.me')
+  axios.post(url, req.query, {
+    headers: {
+      connection: 'keep-alive'
+    },
+    withCredentials: true
+  }).then((response) => {
+    console.log(response)
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e.response.headers)
+    res.status(400).send(e.response.data)
+  })
+})
+
+apiRouter.post('/getpasswordLoginIn', function (req, res) {
+  // res.header('Access-Control-Allow-Origin', 'https://h5.ele.me')
+  var url = 'https://mainsite-restapi.ele.me/v2/login';
+  axios.post(url, req.body, {
+    headers: {
+      connection: 'keep-alive'
+    },
+    withCredentials: true
+  }).then((response) => {
+    console.log(response)
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e.response)
+    res.status(400).send(e.response.data)
   })
 })
 

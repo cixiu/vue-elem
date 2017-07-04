@@ -1,7 +1,8 @@
 import storage from 'good-storage';
 
-const GPS_KEY = '__location__';
-const SEARCH_KEY = '__search-elem__';
+const GPS_KEY = '__location__';            // 地理位置的storage
+const SEARCH_KEY = '__search-elem__';      //  搜索词的storage
+const USERINFO = '__user_info__';
 const SEARCH_MAX_LENGTH = '10';
 
 // 设置地理位置的存储
@@ -49,4 +50,21 @@ export function insertArray (arr, val, compare, maxLength) {
 	if (maxLength && arr.length > maxLength) {
 		arr.pop();
 	}
+}
+
+// 设置登录用户的信息
+export function saveUserInfo (user_infor) {
+	let userInfor = storage.get(USERINFO, null);
+	userInfor = Object.assign({}, user_infor);
+	storage.set(USERINFO, userInfor);
+}
+
+// 获取登录用户的信息
+export function localUserInfo () {
+	return storage.get(USERINFO, null);
+}
+
+// 清除登录用户的信息
+export function clearUserInfo () {
+	return storage.remove(USERINFO);
 }

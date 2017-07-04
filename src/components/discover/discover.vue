@@ -3,7 +3,7 @@
 		<div class="header">
 			<m-title :title-name="targetName"></m-title>
 		</div>
-		<scroll class="content" :data="collection">
+		<scroll class="content" :data="collection" ref="scroll">
 			<div>
 				<div class="recommend" v-if="recommends.length">
 					<div class="top">
@@ -21,7 +21,7 @@
 					</div>
 					<split></split>
 				</div>
-				<div class="category FoodSuggest" v-if="FoodSuggest.length">
+				<div class="category FoodSuggest" v-if="FoodSuggest.length"  @click="goRecommendFood">
 					<div class="active-title">
 						<span class="line left"></span>
 						<i class="icon icon-good"></i>
@@ -32,7 +32,7 @@
 					<div class="active-content">
 						<ul>
 							<li class="item" v-for="food in FoodSuggest">
-								<img width="110" height="100" :src="parseImage(food.image_hash)">
+								<img width="100%" height="100%" :src="parseImage(food.image_hash)">
 								<div class="info">
 									<p class="name">{{ food.name }}</p>
 									<div class="price">
@@ -46,7 +46,7 @@
 					<p class="active-more">查看更多 ></p>
 					<split></split>
 				</div>
-				<div class="category SpecialFood" v-if="SpecialFoodList.length">
+				<div class="category SpecialFood" v-if="SpecialFoodList.length" @click="goSpecicalFood">
 					<div class="active-title">
 						<span class="line left"></span>
 						<i class="icon icon-special-price"></i>
@@ -57,7 +57,7 @@
 					<div class="active-content">
 						<ul>
 							<li class="item" v-for="food in SpecialFoodList">
-								<img width="110" height="100" :src="parseImage(food.image_path)">
+								<img width="100%" height="100%" :src="parseImage(food.image_path)">
 								<div class="info">
 									<p class="name">{{ food.name }}</p>
 									<div class="price">
@@ -72,7 +72,7 @@
 					<p class="active-more">查看更多 ></p>
 					<split></split>
 				</div>
-				<div class="category giftsSuggest" v-if="giftsSuggest.length">
+				<div class="category giftsSuggest" v-if="giftsSuggest.length" @click="goGiftSuggest">
 					<div class="active-title">
 						<span class="line left"></span>
 						<i class="icon icon-alarm"></i>
@@ -83,8 +83,8 @@
 					<div class="active-content">
 						<ul>
 							<li class="item" v-for="gift in giftsSuggest">
-								<a :href="gift.url">
-									<img width="110" height="100" :src="parseImage(gift.image_hash)">
+								<a :href="gift.url" @click="selectGift(gift.url)">
+									<img width="100%" height="100%" :src="parseImage(gift.image_hash)">
 									<div class="info">
 										<p class="name">{{ gift.title }}</p>
 										<div class="price">
@@ -127,14 +127,17 @@
 				Advertisement: [],
 				FoodSuggest: [],
 			  SpecialFoodList: [],
-			  giftsSuggest: []
+			  giftsSuggest: [],
+			  rank_id: ''
 			};
 		},
 		created () {
-			this._getParams();
-			this._getHeaderAd();
-			this._getSpecialFoodList();
-			this._getGiftsSuggest();
+			setTimeout(() => {
+				this._getParams();
+				this._getHeaderAd();
+				this._getSpecialFoodList();
+				this._getGiftsSuggest();
+			}, 20);
 		},
 		computed: {
 			collection () {
@@ -148,6 +151,18 @@
 		methods: {
 			parseImage (imageHash) {
 				return parseImage(imageHash);
+			},
+			selectGift (url) {
+				window.location.href = url;
+			},
+			goRecommendFood () {
+				window.location.href = `https://h5.ele.me/ulike/#request_id=${this.request_id}`;
+			},
+			goSpecicalFood () {
+				window.location.href = `https://h5.ele.me/ranking/#type=special_food&rank_id=${this.rank_id}`;
+			},
+			goGiftSuggest () {
+				window.location.href = `https://h5.ele.me/exchange/`;
 			},
 			_getParams () {
 				getParmas(this.latitude, this.longitude).then((response) => {
@@ -169,7 +184,6 @@
 					response.forEach((item) => {
 						this.FoodSuggest.push(item.foods[0]);
 					});
-					console.log(this.FoodSuggest);
 				});
 			},
 			_getSpecialFoodList () {
@@ -180,7 +194,7 @@
 					response.query_list.splice(0, 3).forEach((item) => {
 						this.SpecialFoodList.push(item.foods[0]);
 					});
-					console.log(this.SpecialFoodList);
+					this.rank_id = response.rank_id;
 				});
 			},
 			_getGiftsSuggest () {
@@ -229,6 +243,7 @@
 		bottom: 50px
 		left: 0
 		overflow: hidden
+		background: #fff
 		.recommend
 			.top
 				display: flex
@@ -329,8 +344,8 @@
 			display: inline-block
 			box-sizing: border-box
 			position: relative
-			width: 111px
-			margin-right: 6px
+			width: 30%
+			margin-right: 3%
 			img
 				margin-bottom: 10px
 			.name

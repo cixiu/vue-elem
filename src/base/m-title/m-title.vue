@@ -27,7 +27,7 @@
 		height: 44px
 		z-index: 999
 		text-align: center
-		background-color: #2196f3
+		background-image: linear-gradient(90deg, #0af, #0085ff)
 		color: #fff
 		.icon-arrow_back
 			position: absolute
@@ -38,5 +38,6 @@
 		.name
 			width: 100%
 			line-height: 44px
-			font-size: 20px
+			font-size: 18px
+			font-weight: 700
 </style>

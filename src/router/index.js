@@ -1,14 +1,71 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import App from '../App';
-import Shop from 'components/shop/shop';
-import Food from 'components/food/food';
-import Search from 'components/search/search';
-import SearchList from 'components/search-list/search-list';
-import Msite from 'components/msite/msite';
-import Discover from 'components/discover/discover';
-import Order from 'components/order/order';
-import Profile from 'components/profile/profile';
+
+const Shop = (resolve) => {
+	import('components/shop/shop').then((module) => {
+		resolve(module);
+	});
+};
+
+const Food = (resolve) => {
+	import('components/food/food').then((module) => {
+		resolve(module);
+	});
+};
+
+const Search = (resolve) => {
+	import('components/search/search').then((module) => {
+		resolve(module);
+	});
+};
+
+const SearchList = (resolve) => {
+	import('components/search-list/search-list').then((module) => {
+		resolve(module);
+	});
+};
+
+const Msite = (resolve) => {
+	import('components/msite/msite').then((module) => {
+		resolve(module);
+	});
+};
+
+const Discover = (resolve) => {
+	import('components/discover/discover').then((module) => {
+		resolve(module);
+	});
+};
+
+const Order = (resolve) => {
+	import('components/order/order').then((module) => {
+		resolve(module);
+	});
+};
+
+const Profile = (resolve) => {
+	import('components/profile/profile').then((module) => {
+		resolve(module);
+	});
+};
+
+const Login = (resolve) => {
+	import('components/login/login').then((module) => {
+		resolve(module);
+	});
+};
+
+const Info = (resolve) => {
+	import('components/info/info').then((module) => {
+		resolve(module);
+	});
+};
+
+const Service = (resolve) => {
+	import('components/service/service').then((module) => {
+		resolve(module);
+	});
+};
 
 Vue.use(Router);
 
@@ -33,7 +90,21 @@ export default new Router({
 		},
 		{
 			path: '/profile',
-			component: Profile
+			component: Profile,
+			children: [
+				{
+					path: 'info',
+					component: Info
+				}
+			]
+		},
+		{
+			path: '/login',
+			component: Login
+		},
+		{
+			path: '/service',
+			component: Service
 		},
 		{
 			path: '/shop/id=:id',

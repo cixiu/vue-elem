@@ -17,3 +17,7 @@ export const SET_GEOHASH = 'SET_GEOHASH';
 export const SET_SEARCH_HISTORY = 'SET_SEARCH_HISTORY';
 
 export const SET_SHOWFLAGGPS = 'SET_SHOWFLAGGPS';
+
+export const SET_USERINFO = 'SET_USERINFO';
+
+export const EMPTY_USERINFO = 'EMPTY_USERINFO';

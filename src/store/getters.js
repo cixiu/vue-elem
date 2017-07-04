@@ -13,3 +13,5 @@ export const geohash = state => state.geohash;
 export const searchHistory = state => state.searchHistory;
 
 export const showFlagGPS = state => state.showFlagGPS;
+
+export const userInfo = state => state.userInfo;
