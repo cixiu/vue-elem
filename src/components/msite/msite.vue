@@ -5,6 +5,9 @@
           ref="scroll" 
           :pullup="pullup"
           @scrollToEnd="getShopperMoreList"
+          :listen-scroll="listenScroll"
+          :probe-type="probeType"
+          @scroll="scroll"
     >
       <div>
         <m-header></m-header>
@@ -18,6 +21,11 @@
       <div class="footer-wrapper">
       	<m-footer></m-footer>
       </div>
+     <transition name="fade">
+     	 <div class="back-top-wrapper" v-show="showBackTop" @click="scrollToTop">
+      	<back-top></back-top>
+      </div>
+     </transition>
     </scroll>
 </template>
 
@@ -28,6 +36,7 @@
   import Shopper from 'components/shopper/shopper';
   import Scroll from 'base/scroll/scroll';
   import MFooter from 'components/m-footer/m-footer';
+  import BackTop from 'base/back-top/back-top';
   import {getShopperList} from 'api/shopper';
   import {getEntries} from 'api/entries';
   import {createEntries} from 'common/js/entries';
@@ -40,7 +49,10 @@
         entries: [],
         hasMore: true,
         offset: 0,
-        pullup: true
+        pullup: true,
+        listenScroll: true,
+        probeType: 3,
+        showBackTop: false
       };
     },
     created () {
@@ -80,6 +92,17 @@
           path: `/food/#${item.link}`
         });
         this.setselectedEntries(item);
+      },
+      scroll (pos) {
+				if (Math.abs(pos.y) > 310) {
+					this.showBackTop = true;
+				} else {
+					this.showBackTop = false;
+				}
+      },
+      scrollToTop () {
+				this.$refs.scroll.scrollTo(0, 0);
+				this.showBackTop = false;
       },
       _getShopperList () {
         if (!this.latitude || !this.longitude) {
@@ -132,7 +155,8 @@
       Split,
       Shopper,
       Scroll,
-      MFooter
+      MFooter,
+      BackTop
     }
 	};
 </script>
@@ -160,4 +184,12 @@
 			bottom: -50px
 			left: 0
 			height: 50px
+		.back-top-wrapper
+			position: absolute
+			right: 15px
+			bottom: 25px
+			&.fade-enter, &.fade-leave-active
+				opacity: 0
+			&.fade-enter-active, &.fade-leave-active
+				transition: all 1.5s
 </style>

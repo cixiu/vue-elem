@@ -117,8 +117,6 @@
         this.setselectedShopper(item);
 			},
 			_getSearchFoods () {
-				console.log(this.$refs.shopperWrapper);
-				// this.$refs.shopperWrapper.scrollTo(0, 0);
 				getSearchFoods(this.latitude, this.longitude, this.offset, this.query).then((response) => {
 					response['0'].restaurant_with_foods.forEach((item) => {
 						this.shoppers.push(item.restaurant);

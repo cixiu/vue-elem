@@ -32,7 +32,7 @@
 					<div class="active-content">
 						<ul>
 							<li class="item" v-for="food in FoodSuggest">
-								<img width="100%" height="100%" :src="parseImage(food.image_hash)">
+								<img width="100%" height="100%" v-lazy="parseImage(food.image_hash)">
 								<div class="info">
 									<p class="name">{{ food.name }}</p>
 									<div class="price">
@@ -57,7 +57,7 @@
 					<div class="active-content">
 						<ul>
 							<li class="item" v-for="food in SpecialFoodList">
-								<img width="100%" height="100%" :src="parseImage(food.image_path)">
+								<img width="100%" height="100%" v-lazy="parseImage(food.image_path)">
 								<div class="info">
 									<p class="name">{{ food.name }}</p>
 									<div class="price">
@@ -84,7 +84,7 @@
 						<ul>
 							<li class="item" v-for="gift in giftsSuggest">
 								<a :href="gift.url" @click="selectGift(gift.url)">
-									<img width="100%" height="100%" :src="parseImage(gift.image_hash)">
+									<img width="100%" height="100%" v-lazy="parseImage(gift.image_hash)">
 									<div class="info">
 										<p class="name">{{ gift.title }}</p>
 										<div class="price">

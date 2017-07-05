@@ -67,6 +67,12 @@ const Service = (resolve) => {
 	});
 };
 
+const Vipcard = (resolve) => {
+	import('components/vipcard/vipcard').then((module) => {
+		resolve(module);
+	});
+};
+
 Vue.use(Router);
 
 export default new Router({
@@ -105,6 +111,10 @@ export default new Router({
 		{
 			path: '/service',
 			component: Service
+		},
+		{
+			path: '/vipcard',
+			component: Vipcard
 		},
 		{
 			path: '/shop/id=:id',

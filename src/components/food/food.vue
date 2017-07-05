@@ -13,8 +13,16 @@
 						 	:pullup="pullup"
 						 	@scrollToEnd="getFoodShopperMore"
 						 	ref="shopperWrapper"
+						 	:listen-scroll="listenScroll"
+		          :probe-type="probeType"
+		          @scroll="scroll"
 			>
 				<shopper :shoppers="shoppers" :has-more="hasMore" @select="selectItem"></shopper>
+				<transition name="fade">
+	     	 <div class="back-top-wrapper" v-show="showBackTop" @click="scrollToTop">
+	      	<back-top></back-top>
+	      </div>
+	     </transition>
 			</scroll>
 		</div>
 	</transition>
@@ -26,6 +34,7 @@
 	import Shopper from 'components/shopper/shopper';
 	import Scroll from 'base/scroll/scroll';
 	import Loading from 'base/loading/loading';
+	import BackTop from 'base/back-top/back-top';
 	import {mapGetters, mapMutations} from 'vuex';
 	import {getFoodShopperList} from 'api/shopper';
 
@@ -41,7 +50,10 @@
 				category_id: null,              // 分类选择的category的id
 				order_by: null,                    // 排序选择的id
 				deliver_mode: null,
-				support_ids: null
+				support_ids: null,
+				listenScroll: true,
+        probeType: 3,
+        showBackTop: false
 			};
 		},
 		created () {
@@ -102,6 +114,17 @@
 					this._checkMore(response);
 				});
 			},
+			scroll (pos) {
+				if (Math.abs(pos.y) > 360) {
+					this.showBackTop = true;
+				} else {
+					this.showBackTop = false;
+				}
+      },
+      scrollToTop () {
+				this.$refs.shopperWrapper.scrollTo(0, 0);
+				this.showBackTop = false;
+      },
 			_getFoodShopperList () {
 				this.hasMore = true;
 				this.offset = 0;
@@ -123,7 +146,8 @@
 			mFilter,
 			Shopper,
 			Scroll,
-			Loading
+			Loading,
+			BackTop
 		}
 	};
 </script>
@@ -171,4 +195,12 @@
 			width: 100%
 			z-index: 50
 			overflow: hidden
+			.back-top-wrapper
+				position: absolute
+				right: 15px
+				bottom: 75px
+				&.fade-enter, &.fade-leave-active
+					opacity: 0
+				&.fade-enter-active, &.fade-leave-active
+					transition: all 1.5s
 </style>

@@ -5,7 +5,7 @@
 			<slider>
 				<div class="item-group-left">
 					<div class="item" v-for='item in entriesLeft' @click="selectItem(item)">
-						<a href="javascrit:">
+						<a>
 							<img width="45" height="45" :src="item.image">
 						</a>
 						<span class="name">{{item.name}}</span>
@@ -13,7 +13,7 @@
 				</div>
 				<div class="item-group-right">
 					<div class="item" v-for="item in entriesRight" @click="selectItem(item)">
-						<a href="javascrit::">
+						<a>
 							<img width="45" height="45" :src="item.image">
 						</a>
 						<span class="name">{{item.name}}</span>

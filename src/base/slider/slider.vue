@@ -31,15 +31,20 @@
 				this._initDots();
 				this._initSlider();
 			}, 20);
-			window.addEventListener('resize', () => {
+			window.addEventListener('resize', this.refresh);
+		},
+		// 组件销毁后 window监听的resize事件应该要解除 否次会报错
+		destroyed () {
+			window.removeEventListener('resize', this.refresh);
+		},
+		methods: {
+			refresh () {
 				if (!this.slider) {
 					return;
 				}
 				this._setSliderWidth(true);
 				this.slider.refresh();
-			});
-		},
-		methods: {
+			},
 			_setSliderWidth (isResize) {
 				this.children = this.$refs.sliderGroup.children;
 				let width = 0;

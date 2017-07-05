@@ -11,10 +11,18 @@
 			titleName: {
 				type: String,
 				default: ''
+			},
+			noRouter: {
+				type: Boolean,
+				default: false
 			}
 		},
 		methods: {
 			back () {
+				if (this.noRouter) {
+					this.$emit('goback');
+					return;
+				}
 				this.$router.back();
 			}
 		}
