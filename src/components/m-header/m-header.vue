@@ -17,9 +17,9 @@
 		<div class="search-btn" @click="enterSearch">
 			<input class="text" type="text" placeholder="搜索商家、商品">
 		</div>
-		<scroll class="hot-search" :data="hotSearch" :scroll-y="false" v-show="hotSearch.length">
+		<scroll class="hot-search" :data="hotSearch" :scroll-y="scrollY" v-show="hotSearch.length">
 			<div>
-				<a class="search-word" v-for="(search,index) in hotSearch" @click="selectItem(search, index)">
+				<a class="search-word" v-for="search in hotSearch" @click="selectItem(search)">
 					{{ search.word }}
 				</a>
 			</div>
@@ -39,7 +39,8 @@
 			return {
 				address: {},
 				weather: {},
-				hotSearch: []
+				hotSearch: [],
+				scrollY: false
 			};
 		},
 		created () {
@@ -61,7 +62,7 @@
 				}
 				return parseImage(imageHase);
 			},
-			selectItem (search, index) {
+			selectItem (search) {
 				this.$router.push({
 					path: `/search/shop?keyword=${search.word}`
 				});
@@ -175,7 +176,7 @@
 			display: flex
 			align-items: center
 			white-space: nowrap
-			overflow: hidden
+			overflow-x: auto
 			.search-word
 				margin-right: 15px
 				line-height: 14px

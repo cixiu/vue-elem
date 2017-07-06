@@ -20,16 +20,18 @@ export function createFood (foodData) {
 		foodData.price = foodData.specfoods[0].original_price;
 	} else {
 		foodData.price = foodData.specfoods[0].price;
-	}
+	};
+
 	let spec = '';
-	let attr = [];
 	// 如果选中的是规格商品
-	if (foodData.specIndex >= 0) {
+	if (foodData.specifications && foodData.specifications.length && foodData.specIndex >= 0) {
 		spec = foodData.specifications[0].values[foodData.specIndex];
 		foodData.price = foodData.specfoods[foodData.specIndex].price;
 	} else {
-		spec = '';
-	}
+		foodData.specIndex = 0;
+	};
+
+	let attr = [];
 	if (foodData.specAttrIndex && foodData.attrs.length) {
 		// attr = foodData.attrs[0].values[foodData.specAttrIndex];
 		// console.log(foodData.specAttrIndex);
@@ -44,12 +46,12 @@ export function createFood (foodData) {
 		shopid: foodData.shopid,
 		category_id: foodData.category_id,
 		item_id: foodData.item_id,
-		food_id: foodData.specfoods[0].food_id,
+		food_id: foodData.food_id ? foodData.food_id : foodData.specfoods[foodData.specIndex].food_id,
 		name: foodData.name,
 		price: foodData.price,
 		count: foodData.count,
-		packing_fee: foodData.specfoods[0].packing_fee,
-		stock: foodData.specfoods[0].stock,
+		packing_fee: foodData.specfoods[foodData.specIndex].packing_fee,
+		stock: foodData.specfoods[foodData.specIndex].stock,
 		spec,
 		attr,
 		specfoods: foodData.specfoods

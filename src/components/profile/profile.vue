@@ -18,7 +18,7 @@
 			<span class="icon icon-keyboard_arrow_right"></span>
 		</div>
 		<div class="pack border-1px">
-			<a href="#">
+			<a>
 				<p class="benefit" v-if="userInfo">
 					<span class="gift">{{ userInfo.gift_amount }}</span>
 					<span class="unit">个</span>
@@ -28,7 +28,7 @@
 				</p>
 				<p class="text">优惠</p>
 			</a>
-			<a href="#">
+			<a>
 				<p class="points" v-if="userInfo">
 					<span class="point">{{ userInfo.point }}</span>
 					<span class="unit">分</span>
@@ -77,10 +77,10 @@
 			return {
 				targetName: '我的',
 				profilePage: [
-					{text: '我的订单', path: '/order', icon: 'icon-my-order'},
+					{text: '我的订单', path: '#/order', icon: 'icon-my-order'},
 					{text: '积分商城', path: 'https://home.m.duiba.com.cn/chome/index', icon: 'icon-points-mall'},
-					{text: '饿了么会员卡', path: '/vipcard', icon: 'icon-vip'},
-					{text: '服务中心', path: '/service', icon: 'icon-service-center'},
+					{text: '饿了么会员卡', path: '#/vipcard', icon: 'icon-vip'},
+					{text: '服务中心', path: '#/service', icon: 'icon-service-center'},
 					{text: '下载饿了么APP', path: 'https://h.ele.me/dapp', icon: 'icon-elem'}
 				]
 			};

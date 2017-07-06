@@ -8,23 +8,30 @@
 <script  type="text/ecmascript-6">
   import GeoPosition from 'components/geo-position/geo-position';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {autoGPS} from 'api/search';
 
   export default {
     computed: {
       ...mapGetters([
-        'showFlagGPS'
+        'showFlagGPS',
+        'latitude',
+        'longitude'
       ])
     },
     created () {
       // 获取当前的地理位置信息
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          this.setGeoPosition({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            geohash: null
+      if (!this.latitude || !this.longitude) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            autoGPS(position.coords.latitude, position.coords.longitude).then((response) => {
+              this.setGeoPosition({
+                latitude: response.latitude,
+                longitude: response.longitude,
+                geohash: response.geohash
+              });
+            });
           });
-        });
+        }
       }
     },
     methods: {

@@ -15,3 +15,7 @@ export const searchHistory = state => state.searchHistory;
 export const showFlagGPS = state => state.showFlagGPS;
 
 export const userInfo = state => state.userInfo;
+
+export const alertText = state => state.alertText;
+
+export const hasTips = state => state.hasTips;

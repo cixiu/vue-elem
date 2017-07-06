@@ -56,7 +56,7 @@
 									</span>
 									<span class="original"  v-if="food.specfoods[0].original_price && !food.activity.is_price_changed">￥{{ food.specfoods[0].original_price }}</span>
 								</div>
-								<div class="add-to-cart" v-if="!food.specfoods[0].stock">
+								<div class="add-to-cart" v-if="!stock(food)">
 									<span class="sold-out">已售罄</span>
 								</div>
 								<div class="add-to-cart" v-else>
@@ -152,6 +152,14 @@
 			])
 		},
 		methods: {
+			// 商品是否还有存货
+			stock (food) {
+				let count = 0;
+				food.specfoods.forEach((spec) => {
+					count += spec.stock;
+				});
+				return count;
+			},
 			// 购物车中对应商品在商品分类的数量
 			num (id) {
 				let num = 0;

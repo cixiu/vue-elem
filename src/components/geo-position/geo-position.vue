@@ -7,7 +7,7 @@
 					<h1 class="name">选择地址</h1>
 				</div>
 				<div class="search-box">
-					<input class="search" type="text" v-model="query" autofocus="autofocus" placeholder="请输入地址" ref="input">
+					<input class="search" type="text" v-model="query" placeholder="请输入地址" ref="input">
 					<i @click="clear" class="icon-close" v-show="query"></i>
 				</div>
 			</div>

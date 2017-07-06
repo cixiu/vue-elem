@@ -21,7 +21,6 @@ export function getCaptchasCode () {
 	return axios.post(url, null, {
 		withCredentials: true
 	}).then((res) => {
-		console.log(res);
 		return Promise.resolve(res.data);
 	}).catch((e) => {
 		console.log(e);
@@ -42,10 +41,8 @@ export function getVerifyCode (mobile, captcha_code) {
 		params: data,
 		withCredentials: true
 	}).then((res) => {
-		console.log(res);
 		return Promise.resolve(res.data);
 	}).catch((err) => {
-		console.log(err.response.data);
 		return Promise.reject(err.response.data);
 	});
 }
@@ -66,7 +63,6 @@ export function getLoginIn (code, mobile, validate_token) {
 		console.log(res);
 		return Promise.resolve(res.data);
 	}).catch((err) => {
-		console.log(err.response.data);
 		return Promise.reject(err.response.data);
 	});
 }

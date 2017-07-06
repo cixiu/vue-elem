@@ -114,9 +114,11 @@
 				let total = 0;
 				Object.values(this.shopCart).forEach((item) => {
 					Object.values(item).forEach((food) => {
-						Object.values(food).forEach((data) => {
-							total += data.count * (data.price + data.packing_fee);
-						});
+						if (food) {
+							Object.values(food).forEach((data) => {
+								total += data.count * (data.price + data.packing_fee);
+							});
+						}
 					});
 				});
 				return total;
@@ -187,6 +189,7 @@
 						let y = -(window.innerHeight - rect.top - 27);
 						this.$refs.logoWrapper.style.display = '';
 						this.$refs.logoWrapper.style.animation = '';
+						this.$refs.logoWrapper.style.WebkitAnimation = '';
 						el.style.WebkitTransform = `translate3d(0, ${y}px, 0)`;
 						el.style.transform = `translate3d(0, ${y}px, 0)`;
 						let inner = el.querySelectorAll('.inner-hook')[0];
@@ -215,6 +218,7 @@
 					ball.show = false;
 					el.style.display = 'none';
 					this.$refs.logoWrapper.style.animation = 'scale .4s';
+					this.$refs.logoWrapper.style.WebkitAnimation = 'scale .4s';
 				}
 			},
 			toggleList () {

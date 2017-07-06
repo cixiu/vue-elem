@@ -1,5 +1,21 @@
 import axios from 'axios';
 
+// 初始化地理位置的geohash值
+export function autoGPS (latitude, longitude) {
+	const url = `https://mainsite-restapi.ele.me/bgs/poi/reverse_geo_coding`;
+
+	const data = {
+		latitude,
+		longitude
+	};
+
+	return axios.get(url, {
+		params: data
+	}).then((res) => {
+		return Promise.resolve(res.data);
+	});
+}
+
 // 获取地理位置信息
 export function search (query) {
 	let url = `https://mainsite-restapi.ele.me/bgs/poi/search_poi_nearby`;

@@ -2,7 +2,7 @@
 	<div class="search-list">
 		<div class="search-box">
 			<i @click="back" class="icon-arrow_back"></i>
-			<input class="search-input" type="text" v-model="query" autofocus="autofocus" placeholder="请输入商品名称" ref="input" @keyup.enter="addSearch">
+			<input class="search-input" type="text" v-model="query" placeholder="请输入商品名称" ref="input" @keyup.enter="addSearch">
 			<i @click="clear" class="icon-close" v-show="query"></i>
 		</div>
 		<div class="filter-wrapper">
@@ -64,7 +64,8 @@
 				this.$refs.input.blur();
 			},
 			addSearch () {
-				this.query = '';
+				this._getSearchFoods();
+				this.$refs.shopperWrapper.scrollTo(0, 0);
 			},
 			getSearchFoodsMore () {
 				if (!this.hasMore || this.stopShowMore) {
@@ -117,6 +118,7 @@
         this.setselectedShopper(item);
 			},
 			_getSearchFoods () {
+				this.shoppers = [];
 				getSearchFoods(this.latitude, this.longitude, this.offset, this.query).then((response) => {
 					response['0'].restaurant_with_foods.forEach((item) => {
 						this.shoppers.push(item.restaurant);

@@ -1,12 +1,12 @@
 <template>
 	<div class="chose">
 		<div class="cartball" v-if="!food.specifications || !food.specifications.length || !food.specfoods || food.specfoods.length === 1">
-			<div class="cart-decrease icon-remove_circle_outline" v-show="foodCount" @click.stop.prevent="decreaseCart"></div>
-			<div class="cart-count" v-show="foodCount">{{ foodCount }}</div>
+			<div class="cart-decrease icon-remove_circle_outline" v-show="foodCount" @click.stop.prevent="decreaseCart(false)"></div>
+			<div class="cart-count" v-show="foodCount">{{ food.count ? food.count : foodCount }}</div>
 			<div class="cart-add icon-add_circle" @click.stop.prevent="addCart($event)"></div>
 		</div>
 		<div class="specifications" v-else>
-			<div class="cart-decrease icon-remove_circle_outline" v-show="foodCount" @click.stop.prevent="decreaseCart"></div>
+			<div class="cart-decrease icon-remove_circle_outline" v-show="foodCount" @click.stop.prevent="decreaseCart(true)"></div>
 			<div class="cart-count" v-show="foodCount">{{ foodCount }}</div>
 			<div class="cart-add" @click.stop.prevent="selectItem">选规模</div>
 		</div>
@@ -14,10 +14,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import {mapGetters, mapMutations} from 'vuex';
+	import {mapGetters, mapMutations, mapActions} from 'vuex';
 	import {createFood} from 'common/js/food';
 
 	export default {
+		data () {
+			return {
+				alertText: ''
+			};
+		},
 		props: {
 			food: {
 				type: Object,
@@ -63,7 +68,17 @@
 				this.$emit('cart-add', this.food, event.target);
 			},
 			// 移出购物车
-			decreaseCart () {
+			decreaseCart (isSpecifications) {
+				// 多规格商品只能去购物车删除
+				if (isSpecifications) {
+					this.alertText = '多规格商品只能去购物车删除哦';
+					this.hasTips = true;
+					this.alertTips({
+						alertText: this.alertText,
+						hasTips: this.hasTips
+					});
+					return;
+				}
 				if (this.foodCount) {
 					this.food.shopid = this.$route.params.id;
 					this.decreaseCount(createFood(this.food));
@@ -75,7 +90,10 @@
 			...mapMutations({
 				setcartFoods: 'SET_CART_FOODS',
 				decreaseCount: 'DECREASE_COUNT'
-			})
+			}),
+			...mapActions([
+				'alertTips'
+			])
 		}
 	};
 </script>

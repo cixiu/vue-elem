@@ -16,11 +16,17 @@
 			<div class="ratings-wrapper" v-if="!showFlag">
 				<ratings></ratings>
 			</div>
+			<transition name="fade">
+				<div class="tips-alert-wrapper" v-show="hasTips">
+					<tips-alert :tips="alertText"></tips-alert>
+				</div>
+			</transition>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript-6">
+	import TipsAlert from 'base/tips-alert/tips-alert';
 	import ShopHeader from 'components/shop-header/shop-header';
 	import Goods from 'components/goods/goods';
 	import Ratings from 'components/ratings/ratings';
@@ -35,7 +41,9 @@
 		},
 		computed: {
 			...mapGetters([
-				'selectedShopper'
+				'selectedShopper',
+				'alertText',
+				'hasTips'
 			])
 		},
 		methods: {
@@ -49,7 +57,8 @@
 		components: {
 			ShopHeader,
 			Goods,
-			Ratings
+			Ratings,
+			TipsAlert
 		}
 	};
 </script>
@@ -65,10 +74,6 @@
 		left: 0
 		z-index: 50
 		background: #fff
-		// &.slide-enter, &.slide-leave-active
-		// 	transform: translate3d(100%, 0, 0)
-		// &.slide-enter-active, &.slide-leave-active
-		// 	transition: all .5s
 		.tab
 			display: flex
 			height: 45px
@@ -85,4 +90,15 @@
 					.text
 						color: #3190e8
 						border-bottom: 2px solid #3190e8
+		.tips-alert-wrapper
+			position: absolute
+			top: 50%
+			left: 0
+			z-index: 50
+			width: 100%
+			transform: translate3d(0, -50%, 0)
+			&.fade-enter, &.fade-leave-active
+				opacity: 0
+			&.fade-enter-active, &.fade-leave-active
+				transition: all 0.8s
 </style>

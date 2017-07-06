@@ -6,11 +6,11 @@
 					<m-title :title-name="targetName" :no-router="true" @goback="goback"></m-title>
 				</div>
 				<div class="service-header border-1px">
-					<a class="group" href="#">
+					<a class="group">
 						<i class="icon icon-dialog"></i>
 						<p class="text">在线客服</p>
 					</a>
-					<a class="group" href="#">
+					<a class="group">
 						<i class="icon icon-phone-old"></i>
 						<p class="text">客服热线</p>
 					</a>
@@ -59,7 +59,6 @@
 			_getQuestion () {
 				getQuestion().then((response) => {
 					this.hotQuestiones = this.normalize(response);
-					console.log(this.hotQuestiones);
 				});
 			},
 			normalize (obj) {
@@ -69,7 +68,7 @@
 					if (caption.indexOf('Caption') !== -1) {
 						if (obj[caption].indexOf('问题') !== -1) {
 							ret.push({
-								tag: `#${caption.substring(0, caption.indexOf('Caption'))}`,
+								tag: `#/service/#${caption.substring(0, caption.indexOf('Caption'))}`,
 								question: obj[caption],
 								detail: obj[list[index + 1]]
 							});
@@ -83,7 +82,6 @@
 				this.questionName = item.question;
 				let converter = new Showdown.Converter();
 				this.questionDetail = converter.makeHtml(item.detail);
-				console.log(this.questionDetail);
 			},
 			goback () {
 				if (this.showFlag) {

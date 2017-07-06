@@ -13,5 +13,13 @@ export default {
 	},
 	clearSearchHistory ({commit}) {
 		commit(types.SET_SEARCH_HISTORY, clearSearch());
+	},
+	alertTips ({state, commit}, {alertText, hasTips}) {
+		setTimeout(() => {
+			hasTips = false;
+			commit(types.SET_HASTIPS, hasTips);
+		}, 2000);
+		commit(types.SET_ALERTTEXT, alertText);
+		commit(types.SET_HASTIPS, hasTips);
 	}
 };

@@ -39,11 +39,8 @@ export default {
 				item[food.food_id]['count']--;
 				if (item[food.food_id]['count'] === 0) {
 					// 商品数量为0，则清空当前商品的信息
-					shop[food.category_id][food.item_id] = {};
+					delete item[food.food_id];
 				}
-			} else {
-				// 商品数量为0，则清空当前商品的信息
-				item[food.food_id] = null;
 			}
 			state.cartFoods = {...cart};
 		}
@@ -86,5 +83,12 @@ export default {
 	[types.EMPTY_USERINFO] (state) {
 		state.userInfo = null;
 		clearUserInfo();
+	},
+	// 多规格商品只能在购物车中删除的提示
+	[types.SET_ALERTTEXT] (state, alertText) {
+		state.alertText = alertText;
+	},
+	[types.SET_HASTIPS] (state, hasTips) {
+		state.hasTips = hasTips;
 	}
 };

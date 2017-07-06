@@ -21,3 +21,7 @@ export const SET_SHOWFLAGGPS = 'SET_SHOWFLAGGPS';
 export const SET_USERINFO = 'SET_USERINFO';
 
 export const EMPTY_USERINFO = 'EMPTY_USERINFO';
+
+export const SET_ALERTTEXT = 'SET_ALERTTEXT';
+
+export const SET_HASTIPS = 'SET_HASTIPS';

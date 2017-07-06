@@ -9,5 +9,7 @@ export default {
 	geohash: localPosition().geohash,
 	searchHistory: localSearch(),
 	showFlagGPS: false,
-	userInfo: localUserInfo()
+	userInfo: localUserInfo(),
+	alertText: '',
+	hasTips: false
 };
