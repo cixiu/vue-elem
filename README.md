@@ -26,11 +26,11 @@ npm run build
 ## 项目说明
 > 由于后面数据api的受限，与用户有关的订单没有开发，其他功能基本开发完毕，后续还会继续完善这个项目~~
 
-# 效果演示
+## 效果演示
 [demo演示请戳这里](https://cixiu.github.io/vue-elem-demo) (请使用chrome手机模式预览)
 
-## 移动端请扫下方二维码
-![](https://github.com/cixiu/vue-elem/blob/master/resources/QR_code.png)
+### 移动端请扫下方二维码
+<img width="200" height="200" src="https://github.com/cixiu/vue-elem/blob/master/resources/QR_code.png">
 
 # 项目的目录结构
 
