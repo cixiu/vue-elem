@@ -40,21 +40,6 @@ app.use(cookieParser())
 // 服务端代理请求url
 var apiRouter = express.Router()
 
-apiRouter.get('/getEntries', function (req, res) {
-  var url = 'https://mainsite-restapi.ele.me/shopping/v2/entries';
-  axios.get(url, {
-    headers: {
-      referer: 'https://h5.ele.me/msite/',
-      host: 'mainsite-restapi.ele.me'
-    },
-    params: req.query
-  }).then((response) => {
-    res.json(response.data)
-  }).catch((e) => {
-    console.log(e)
-  })
-})
-
 apiRouter.post('/getCaptchasCode', function (req, res, next) {
   var url = 'https://mainsite-restapi.ele.me/v1/captchas';
   // res.header('Access-Control-Allow-Origin', 'https://h5.ele.me')
