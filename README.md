@@ -32,6 +32,14 @@ npm run build
 ### 移动端请扫下方二维码
 <img width="200" height="200" src="https://github.com/cixiu/vue-elem/blob/master/resources/QR_code.png">
 
+### 部分截图
+<img src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.gif">
+<img src="https://github.com/cixiu/vue-elem/blob/master/resources/search.gif">
+<img src="https://github.com/cixiu/vue-elem/blob/master/resources/hot-search.gif">
+<img src="https://github.com/cixiu/vue-elem/blob/master/resources/tab.gif">
+<img src="https://github.com/cixiu/vue-elem/blob/master/resources/shopper.gif">
+<img src="https://github.com/cixiu/vue-elem/blob/master/resources/userinfo.gif">
+
 # 项目的目录结构
 
 ```
