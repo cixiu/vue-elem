@@ -11,8 +11,33 @@ export default {
 		let shop = cart[food.shopid] = cart[food.shopid] || {};
 		let category = shop[food.category_id] = shop[food.category_id] || {};
 		let item = category[food.item_id] = category[food.item_id] || {};
+		let flag = false;
+
 		if (item[food.food_id]) {
-			item[food.food_id]['count']++;
+			// 多规格多属性商品需要进行拆分
+			if (!item[food.food_id]['attrs'].length) {
+				item[food.food_id]['count']++;
+			} else {
+				Object.keys(item).forEach((key) => {
+					if (item[key]['attrs'].toString() === food.attrs.toString()) {
+						item[key]['count']++;
+						flag = true;
+					}
+				});
+				if (!flag) {
+					item[food.food_id + '_' + +new Date()] = {
+						count: 1,
+						food_id: food.food_id + '_' + +new Date(),
+						name: food.name,
+						price: food.price,
+						packing_fee: food.packing_fee,
+						stock: food.stock,
+						spec: food.spec,
+						attrs: food.attrs,
+						specfoods: food.specfoods
+					};
+				}
+			}
 		} else {
 			item[food.food_id] = {
 				count: 1,
@@ -22,7 +47,7 @@ export default {
 				packing_fee: food.packing_fee,
 				stock: food.stock,
 				spec: food.spec,
-				attr: food.attr,
+				attrs: food.attrs,
 				specfoods: food.specfoods
 			};
 		}

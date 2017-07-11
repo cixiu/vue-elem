@@ -45,7 +45,7 @@
 										<span class="name">{{ food.name }}</span>
 										<p class="desc">
 											<span class="spec" v-if="food.spec">{{ food.spec }}</span>
-											<span class="attr" v-if="food.attr.length>0" v-for="value in food.attr"> / {{ value }}</span>
+											<span class="attr" v-if="food.attrs.length>0" v-for="value in food.attrs"> / {{ value }}</span>
 										</p>
 									</div>
 									<div class="price">
