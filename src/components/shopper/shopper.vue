@@ -32,7 +32,7 @@
 							<span class="average-cost">{{ item.average_cost }}</span>
 						</div>
 						<div class="distance-time">
-							<span class="distance">{{ item.distance }}m /</span>
+							<span class="distance">{{ Math.round(item.distance/10)/100 }}km /</span>
 							<span class="time">{{ item.order_lead_time }}分钟</span>
 						</div>
 					</div>
