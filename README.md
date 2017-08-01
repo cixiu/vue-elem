@@ -36,8 +36,7 @@ npm run build
 ### 部分截图
 
 #### 首页
-<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.jpg">
-<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.gif">
+<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.jpg"><img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.gif">
 
 #### 商品搜索页
 <img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/search.jpg"><img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/search.gif">
