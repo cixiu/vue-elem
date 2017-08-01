@@ -36,22 +36,22 @@ npm run build
 ### 部分截图
 
 #### 首页
-<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.jpg"><img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.gif">
+<img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.jpg"><img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.gif">
 
 #### 商品搜索页
-<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/search.jpg"><img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/search.gif">
+<img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/search.jpg"><img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/search.gif">
 
 #### 商品热搜
-<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/hot-search.jpg"><img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/hot-search.gif">
+<img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/hot-search.jpg"><img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/hot-search.gif">
 
 #### 商品分类
-<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/tab.jpg"><img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/tab.gif">
+<img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/tab.jpg"><img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/tab.gif">
 
 #### 商家详情
-<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/shopper.jpg"><img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/shopper.gif">
+<img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/shopper.jpg"><img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/shopper.gif">
 
 #### 个人信息
-<img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/userinfo.jpg"><img width="320" height="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/userinfo.gif">
+<img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/userinfo.jpg"><img width="375" height="667" src="https://github.com/cixiu/vue-elem/blob/master/resources/userinfo.gif">
 
 # 项目的目录结构
 
