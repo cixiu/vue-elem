@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 初始化地理位置的geohash值
 export function autoGPS (latitude, longitude) {
-	const url = `https://mainsite-restapi.ele.me/bgs/poi/reverse_geo_coding`;
+	const url = `/bgs/poi/reverse_geo_coding`;
 
 	const data = {
 		latitude,
@@ -18,7 +18,7 @@ export function autoGPS (latitude, longitude) {
 
 // 获取地理位置信息
 export function search (query) {
-	let url = `https://mainsite-restapi.ele.me/bgs/poi/search_poi_nearby`;
+	let url = `/bgs/poi/search_poi_nearby`;
 
 	let data = {
 		keyword: query,
@@ -35,7 +35,7 @@ export function search (query) {
 
 // 获取热门搜索词
 export function getHotSearchWords (latitude, longitude, geohash) {
-	let url = `https://mainsite-restapi.ele.me/shopping/v3/hot_search_words`;
+	let url = `/shopping/v3/hot_search_words`;
 
 	let data = {
 		latitude,
@@ -52,7 +52,7 @@ export function getHotSearchWords (latitude, longitude, geohash) {
 
 // 搜索商家、商品
 export function getSearchFoods (latitude, longitude, offset, keyword, category_id, order_by, delivery_mode, support_ids) {
-	let url = `https://mainsite-restapi.ele.me/shopping/v1/restaurants/search`;
+	let url = `/shopping/v1/restaurants/search`;
 
 	let data = {
 		offset,

@@ -4,7 +4,8 @@
 
 在学习了vue的官方文档后，后续在网上又找了些有关vue实战的项目学习，其中比较经典的是慕课网的那门彷饿了么外卖app的课程。那么课程作为对vue的入门教程还是可以的，不过那么课程只是开发了一个商家详情页，其他的功能都没有实现，项目的复杂程度也远不如真实的饿了么。而本项目旨在完成饿了么的全部功能！
 
-在这个项目开始前，本来想选豆瓣做的，看了下豆瓣的开发者平台，其中大部分的api都需要授权，所以就放弃了！之后又对比了下其他的外卖app,发现饿了么的页面给人的感觉是比较有层次感的，而且饿了么的api可以直接获取，大部分没有限制！有了数据支持，那么，接下来的事情就是可以进行开发了！
+## 补充说明(2017-8-1)
+近期饿了么官方对api做了一些限制，导致原来现在所以的数据请求都无法正常的获取。为此，最近对此项目使用了[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)代理插件进行数据请求的代理。因此原来的demo演示的数据请求已经失效，页面因为跨域的问题已经不能正常的显示。为了更好的查看该项目，请clone后在本地查看。
 
 ## 技术栈
 > vue + vue-router + vuex + axios + webpack + es6 + stylus
@@ -33,12 +34,30 @@ npm run build
 <img width="200" height="200" src="https://github.com/cixiu/vue-elem/blob/master/resources/QR_code.png">
 
 ### 部分截图
-<img src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.gif">
-<img src="https://github.com/cixiu/vue-elem/blob/master/resources/search.gif">
-<img src="https://github.com/cixiu/vue-elem/blob/master/resources/hot-search.gif">
-<img src="https://github.com/cixiu/vue-elem/blob/master/resources/tab.gif">
-<img src="https://github.com/cixiu/vue-elem/blob/master/resources/shopper.gif">
-<img src="https://github.com/cixiu/vue-elem/blob/master/resources/userinfo.gif">
+
+#### 首页
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.jpg">
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/msite.gif">
+
+#### 商品搜索页
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/search.jpg">
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/search.gif">
+
+#### 商品热搜
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/hot-search.jpg">
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/hot-search.gif">
+
+#### 商品分类
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/tab.jpg">
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/tab.gif">
+
+#### 商家详情
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/shopper.jpg">
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/shopper.gif">
+
+#### 个人信息
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/userinfo.jpg">
+<img width="320" heigh="640" src="https://github.com/cixiu/vue-elem/blob/master/resources/userinfo.gif">
 
 # 项目的目录结构
 

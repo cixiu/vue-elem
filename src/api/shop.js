@@ -1,7 +1,7 @@
 import axios from 'axios';
 // 获取商家数据
 export function getShop (latitude, longitude, id) {
-	const url = `https://mainsite-restapi.ele.me/shopping/restaurant/${id}?extras[]=activities&extras[]=albums&extras[]=license&extras[]=identification`;
+	const url = `/shopping/restaurant/${id}?extras[]=activities&extras[]=albums&extras[]=license&extras[]=identification`;
 
 	const data = {
 		latitude,
@@ -17,7 +17,7 @@ export function getShop (latitude, longitude, id) {
 
 // 获取商家商品数据
 export function getGoods (id) {
-	const url = `https://mainsite-restapi.ele.me/shopping/v2/menu`;
+	const url = `/shopping/v2/menu`;
 
 	const data = {
 		restaurant_id: id
@@ -32,7 +32,7 @@ export function getGoods (id) {
 
 // 获取商家评论数据
 export function getRatings (id, offset, tag_name) {
-	const url = `https://mainsite-restapi.ele.me/ugc/v2/restaurants/${id}/ratings`;
+	const url = `/ugc/v2/restaurants/${id}/ratings`;
 
 	const data = {
 		has_content: true,
@@ -50,7 +50,7 @@ export function getRatings (id, offset, tag_name) {
 
 // 获取商家评分数据
 export function getScores (id) {
-	const url = `https://mainsite-restapi.ele.me/ugc/v2/restaurants/${id}/ratings/scores`;
+	const url = `/ugc/v2/restaurants/${id}/ratings/scores`;
 
 	return axios.get(url).then((res) => {
 		return Promise.resolve(res.data);
@@ -59,7 +59,7 @@ export function getScores (id) {
 
 // 获取商家评价分类数据
 export function getRatingsTags (id) {
-	const url = `https://mainsite-restapi.ele.me/ugc/v2/restaurants/${id}/ratings/tags`;
+	const url = `/ugc/v2/restaurants/${id}/ratings/tags`;
 
 	return axios.get(url).then((res) => {
 		return Promise.resolve(res.data);

@@ -2,25 +2,28 @@ import axios from 'axios';
 // axios.defaults.withCredentials = true;
 
 export function getCurrentUser () {
-	const url = `https://mainsite-restapi.ele.me/eus/v1/current_user`;
+	const url = `/eus/v1/current_user`;
 
 	const data = {
 		info_raw: {}
 	};
 
 	return axios.get(url, {
-		params: data
+		params: data,
+		withCredentials: true
 	}).then((res) => {
 		return Promise.resolve(res.data);
 	});
 }
 
 export function getCaptchasCode () {
-	const url = `/api/getCaptchasCode`;
+	const url = `/v1/captchas`;
 
 	return axios.post(url, null, {
-		withCredentials: true
+		// withCredentials: true
+		'set-cookie': 'xxx=xxxxxxxx'
 	}).then((res) => {
+		console.log(res);
 		return Promise.resolve(res.data);
 	}).catch((e) => {
 		console.log(e);
@@ -28,7 +31,7 @@ export function getCaptchasCode () {
 }
 
 export function getVerifyCode (mobile, captcha_code) {
-	const url = `/api/getVerifyCode`;
+	const url = `/v4/mobile/verify_code/send`;
 
 	const data = {
 		mobile,
@@ -37,8 +40,7 @@ export function getVerifyCode (mobile, captcha_code) {
 		type: 'sms'
 	};
 
-	return axios.get(url, {
-		params: data,
+	return axios.post(url, data, {
 		withCredentials: true
 	}).then((res) => {
 		return Promise.resolve(res.data);
@@ -48,7 +50,7 @@ export function getVerifyCode (mobile, captcha_code) {
 }
 
 export function getLoginIn (code, mobile, validate_token) {
-	const url = `/api/getLoginIn`;
+	const url = `/v1/login/app_mobile`;
 
 	const data = {
 		code,
@@ -56,8 +58,7 @@ export function getLoginIn (code, mobile, validate_token) {
 		validate_token
 	};
 
-	return axios.get(url, {
-		params: data,
+	return axios.post(url, data, {
 		withCredentials: true
 	}).then((res) => {
 		console.log(res);
@@ -68,7 +69,7 @@ export function getLoginIn (code, mobile, validate_token) {
 }
 
 export function getpasswordLoginIn (username, password, captcha_code) {
-	const url = `/api/getpasswordLoginIn`;
+	const url = `/v2/login`;
 
 	const data = {
 		captcha_code,
@@ -77,12 +78,12 @@ export function getpasswordLoginIn (username, password, captcha_code) {
 	};
 
 	return axios.post(url, data, {
-    withCredentials: true
+    // withCredentials: true
   }).then((res) => {
 		console.log(res);
 		return Promise.resolve(res.data);
 	}).catch((err) => {
-		console.log(err.response.data);
+		console.log(err.response);
 		return Promise.reject(err.response.data);
 	});
 }

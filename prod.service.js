@@ -1,7 +1,10 @@
 var express = require('express');
 var config = require('./config/index');
-var bodyParser = require('body-parser');
 var app = express();
+var proxyMiddleware = require('http-proxy-middleware');
+
+/*
+var bodyParser = require('body-parser');
 var axios = require('axios');
 
 app.use(bodyParser.json());
@@ -81,6 +84,15 @@ apiRouter.post('/getpasswordLoginIn', function (req, res) {
 });
 
 app.use('/api', apiRouter);
+*/
+
+var context = config.dev.proxyTable;
+var options = {
+  target: config.dev.proxyTarget,
+  changeOrigin: true
+};
+app.use(proxyMiddleware(context, options));
+
 app.use(express.static('./dist'));
 
 var port = process.env.PORT || config.build.port;

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 根据地理位置为discover页面请求获取不同的参数
 export function getParmas (latitude, longitude) {
-	const url = `https://mainsite-restapi.ele.me/hotfood/v1/guess/banner`;
+	const url = `/hotfood/v1/guess/banner`;
 
 	const data = {
 		latitude,
@@ -18,7 +18,7 @@ export function getParmas (latitude, longitude) {
 
 // header的广告数据
 export function getHeaderAd (latitude, longitude) {
-	const url = 'https://mainsite-restapi.ele.me/member/v1/discover';
+	const url = '/member/v1/discover';
 
 	const data = {
 		latitude,
@@ -36,7 +36,7 @@ export function getHeaderAd (latitude, longitude) {
 
 // 美食热推
 export function getFoodSuggest (latitude, longitude, request_id, tag_id) {
-	const url = `https://mainsite-restapi.ele.me/hotfood/v1/guess/likes`;
+	const url = `/hotfood/v1/guess/likes`;
 
 	const data = {
 		latitude,
@@ -57,7 +57,7 @@ export function getFoodSuggest (latitude, longitude, request_id, tag_id) {
 
 // 天天特价
 export function getSpecialFoodList (latitude, longitude) {
-	const url = `https://mainsite-restapi.ele.me/shopping/v1/sale_list_index`;
+	const url = `/shopping/v1/sale_list_index`;
 
 	const data = {
 		type: 'special_food',
@@ -75,7 +75,7 @@ export function getSpecialFoodList (latitude, longitude) {
 
 // 限时好礼
 export function getGiftsSuggest () {
-	const url = `https://mainsite-restapi.ele.me/member/gifts/suggest`;
+	const url = `/member/gifts/suggest`;
 
 	return axios.get(url).then((res) => {
 		return Promise.resolve(res.data);

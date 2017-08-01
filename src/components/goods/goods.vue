@@ -90,7 +90,7 @@
 							<span class="money-icon">¥</span>
 							<span class="price-num">{{ selectFood.specfoods[specIndex].price }}</span>
 						</div>
-						<div class="cartButton" :class="{ disable: selectFood.specfoods[specIndex].stock === 0 }" @click="addCart">{{selectFood.specfoods[specIndex].stock ? '加入购物车' : '尽限0份'}}</div>
+						<div class="cartButton" :class="{ disable: selectFood.specfoods[specIndex].stock === 0 }" @click="addCart">{{selectFood.specfoods[specIndex].stock ? '加入购物车' : '仅限0份'}}</div>
 					</div>
 					<span class="close icon-close" @click="close"></span>
 				</div>

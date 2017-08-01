@@ -13,7 +13,7 @@ var cookieParser = require('cookie-parser')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
-var axios = require('axios')
+// var axios = require('axios')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -24,21 +24,12 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
-// var allowCrossDomain = function (req, res, next) {
-//   res.header({
-//     'Access-Control-Allow-Credentials': true,
-//     'Access-Control-Allow-Headers': 'Content-Type, X-ELEME-USERID, X-Eleme-RequestID, X-Shard',
-//     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-//     'Access-Control-Allow-Origin': '*'
-//   })
-//   next()
-// }
 
 // app.use(allowCrossDomain)
-app.use(bodyParser.json())
-app.use(cookieParser())
+// app.use(bodyParser.json())
+// app.use(cookieParser())
 // 服务端代理请求url
-var apiRouter = express.Router()
+/*var apiRouter = express.Router()
 
 apiRouter.post('/getCaptchasCode', function (req, res, next) {
   var url = 'https://mainsite-restapi.ele.me/v1/captchas';
@@ -53,7 +44,6 @@ apiRouter.post('/getCaptchasCode', function (req, res, next) {
     console.log(e)
   })
 })
-
 
 apiRouter.get('/getVerifyCode', function (req, res, next) {
   var url = 'https://mainsite-restapi.ele.me/v4/mobile/verify_code/send';
@@ -107,7 +97,7 @@ apiRouter.post('/getpasswordLoginIn', function (req, res) {
   })
 })
 
-app.use('/api', apiRouter)
+app.use('/api', apiRouter)*/
 
 var compiler = webpack(webpackConfig)
 
@@ -128,13 +118,21 @@ compiler.plugin('compilation', function (compilation) {
 })
 
 // proxy api requests
-Object.keys(proxyTable).forEach(function (context) {
+/*Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]
   if (typeof options === 'string') {
     options = { target: options }
   }
   app.use(proxyMiddleware(options.filter || context, options))
-})
+})*/
+
+
+var context = config.dev.proxyTable
+var options = {
+  target: config.dev.proxyTarget,
+  changeOrigin: true
+}
+app.use(proxyMiddleware(context, options))
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())

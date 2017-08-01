@@ -2,7 +2,7 @@ import axios from 'axios';
 import {parseLink} from 'common/js/util';
 
 export function getShopperList (latitude, longitude, offset) {
-	const url = 'https://mainsite-restapi.ele.me/shopping/restaurants';
+	const url = '/shopping/restaurants';
 
 	const data = {
 		latitude,
@@ -21,10 +21,10 @@ export function getShopperList (latitude, longitude, offset) {
 }
 
 export function getFoodShopperList (latitude, longitude, offset, keyword, link, category_id, order_by, delivery_mode, support_ids) {
-	let url = `https://mainsite-restapi.ele.me/shopping/restaurants`;
+	let url = `/shopping/restaurants`;
 	if (link) {
 		link = parseLink(link);
-		url = `https://mainsite-restapi.ele.me/shopping/restaurants?${link}`;
+		url = `/shopping/restaurants?${link}`;
 	}
 
 	let supports = '';
@@ -32,7 +32,7 @@ export function getFoodShopperList (latitude, longitude, offset, keyword, link, 
 		support_ids.forEach((item) => {
 			supports += `support_ids[]=${item}&`;
 		});
-		url = `https://mainsite-restapi.ele.me/shopping/restaurants?${supports}`;
+		url = `/shopping/restaurants?${supports}`;
 	}
 
 	let data = {

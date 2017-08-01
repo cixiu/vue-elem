@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export function getGeography (latitude, longitude) {
-	let url = `https://mainsite-restapi.ele.me/bgs/poi/reverse_geo_coding`;
+	let url = `/bgs/poi/reverse_geo_coding`;
 
 	let data = {
 		latitude,
@@ -16,7 +16,7 @@ export function getGeography (latitude, longitude) {
 }
 
 export function getWeather (latitude, longitude) {
-	let url = `https://mainsite-restapi.ele.me/bgs/weather/current`;
+	let url = `/bgs/weather/current`;
 
 	let data = {
 		latitude,
@@ -31,7 +31,7 @@ export function getWeather (latitude, longitude) {
 }
 
 export function getHotSearch (latitude, longitude) {
-	let url = `https://mainsite-restapi.ele.me/shopping/v3/hot_search_words`;
+	let url = `/shopping/v3/hot_search_words`;
 
 	let data = {
 		latitude,

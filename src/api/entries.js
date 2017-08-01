@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 export function getEntries (latitude, longitude) {
-	const url = 'https://mainsite-restapi.ele.me/shopping/v2/entries';
+	const url = '/shopping/v2/entries';
 
 	const data = {
 		latitude,
@@ -11,9 +11,9 @@ export function getEntries (latitude, longitude) {
 		'templates[]': 'main_template'
 	};
 
-		return axios.get(url, {
-			params: data
-		}).then((res) => {
-			return Promise.resolve(res.data);
-		});
+	return axios.get(url, {
+		params: data
+	}).then((res) => {
+		return Promise.resolve(res.data);
+	});
 }

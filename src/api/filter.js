@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export function getDeliveryMode (latitude, longitude) {
-	const url = `https://mainsite-restapi.ele.me/shopping/v1/restaurants/delivery_modes`;
+	const url = `/shopping/v1/restaurants/delivery_modes`;
 
 	const data = {
 		latitude,
@@ -17,7 +17,7 @@ export function getDeliveryMode (latitude, longitude) {
 }
 
 export function getAttributes (latitude, longitude) {
-	const url = `https://mainsite-restapi.ele.me/shopping/v1/restaurants/activity_attributes`;
+	const url = `/shopping/v1/restaurants/activity_attributes`;
 
 	const data = {
 		latitude,
