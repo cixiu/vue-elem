@@ -24,11 +24,8 @@ npm run dev
 npm run build
 ```
 
-## 项目说明
-> 由于后面数据api的受限，与用户有关的订单没有开发，其他功能基本开发完毕，后续还会继续完善这个项目~~
-
 ## 效果演示
-[demo演示请戳这里](https://cixiu.github.io/vue-elem-demo) (请使用chrome手机模式预览)
+[demo演示请戳这里](https://elem.tzpcc.cn) (请使用chrome手机模式预览)
 
 ### 移动端请扫下方二维码
 <img width="200" height="200" src="https://github.com/cixiu/vue-elem/blob/master/resources/QR_code.png">
@@ -64,7 +61,7 @@ npm run build
 │  │  App.vue                           // 入口组件
 │  │  main.js                           // 程序入口
 │  ├─api                               // 数据接口
-│  │      category.js                  
+│  │      category.js
 │  │      config.js
 │  │      discover.js
 │  │      entries.js
@@ -74,9 +71,9 @@ npm run build
 │  │      search.js
 │  │      service.js
 │  │      shop.js
-│  │      shopper.js  
+│  │      shopper.js
 │  ├─base                              // 基础组件
-│  │  ├─back-top                      
+│  │  ├─back-top
 │  │  │      back-top.vue              // 回到顶部组件
 │  │  ├─cartball
 │  │  │      cartball.vue              // 购物车小球组件
@@ -126,10 +123,10 @@ npm run build
 │  │  ├─discover                      // 发现页组件
 │  │  │      discover.vue
 │  │  ├─food                          // 食品组件
-│  │  │      food.vue 
+│  │  │      food.vue
 │  │  ├─geo-position
-│  │  │      geo-position.vue          // 地理信息组件  
-│  │  ├─goods                         
+│  │  │      geo-position.vue          // 地理信息组件
+│  │  ├─goods
 │  │  │      goods.vue                 // 商家详情页中的商品组件
 │  │  ├─info
 │  │  │      info.vue                  // 登录后的个人信息组件
@@ -154,17 +151,17 @@ npm run build
 │  │  ├─service
 │  │  │      service.vue               // 服务组件
 │  │  ├─shop
-│  │  │      shop.vue                  // 商家详情页组件 
+│  │  │      shop.vue                  // 商家详情页组件
 │  │  ├─shop-header
 │  │  │      shop-header.vue           // 商家详情也头部组件
 │  │  ├─shopcart
 │  │  │      shopcart.vue              // 购物车组件
 │  │  ├─shopper
-│  │  │      shopper.vue               // 商家组件    
+│  │  │      shopper.vue               // 商家组件
 │  │  ├─tab
-│  │  │      tab.vue                   // 食品分类导航组件  
+│  │  │      tab.vue                   // 食品分类导航组件
 │  │  └─vipcard
-│  │          vipcard.vue               // 饿了么会员卡组件  
+│  │          vipcard.vue               // 饿了么会员卡组件
 │  ├─router
 │  │      index.js                      // 路由配置
 │  └─store                             // vuex状态管理

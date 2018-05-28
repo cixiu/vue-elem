@@ -20,7 +20,7 @@
 					</div>
 				</div>
 			</div>
-			<transition-group 
+			<transition-group
 												tag="div"
 												class="balls-wrapper"
 												@before-enter="beforeEnter"
@@ -52,7 +52,7 @@
 										<span>¥{{ food.count * food.price }}</span>
 									</div>
 									<div class="cartball-wrapper">
-										<cartball :food="food"></cartball>
+										<cartball :food="food" @cart-add="shopcartScale" ></cartball>
 									</div>
 								</li>
 							</ul>
@@ -172,22 +172,23 @@
 				let len = this.balls.length;
 				for (let i = 0; i < len; i++) {
 					if (!this.balls[i].show) {
-						this.balls[i].show = true;
+            this.balls[i].show = true;
 						this.balls[i].el = el;
 						this.dropBalls.push(this.balls[i]);
 						return;
 					}
-				}
+        }
 			},
 			beforeEnter (el) {
+        // console.log(this.dropBalls);
+        // console.log(this.balls);
 				let count = this.balls.length;
 				while (count--) {
-					let ball = this.balls[count];
+          let ball = this.balls[count];
 					if (ball.show) {
 						let rect = ball.el.getBoundingClientRect();
 						let x = rect.left - 29;
-						let y = -(window.innerHeight - rect.top - 27);
-						this.$refs.logoWrapper.style.display = '';
+            let y = -(window.innerHeight - rect.top - 27);
 						this.$refs.logoWrapper.style.animation = '';
 						this.$refs.logoWrapper.style.WebkitAnimation = '';
 						el.style.WebkitTransform = `translate3d(0, ${y}px, 0)`;
@@ -200,7 +201,7 @@
 			},
 			enter (el, done) {
 				/* eslint-disable no-unused-vars */
-				let rf = el.offsetHeight;  // 触发浏览器重绘
+				let rf = el.offsetHeight;  // 触发浏览器回流
 				this.$nextTick(() => {
 					el.style.WebKitTransform = 'translate3d(0, 0, 0)';
 					el.style.transform = 'translate3d(0, 0, 0)';
@@ -213,14 +214,24 @@
 				});
 			},
 			afterEnter (el) {
-				let ball = this.dropBalls.shift();
+        let ball = this.dropBalls.shift();
 				if (ball) {
 					ball.show = false;
-					el.style.display = 'none';
-					this.$refs.logoWrapper.style.animation = 'scale .4s';
-					this.$refs.logoWrapper.style.WebkitAnimation = 'scale .4s';
+          el.style.display = 'none';
+          el.style.transform = '';
+          el.style.transition = '';
+					this.shopcartScale();
 				}
-			},
+      },
+      shopcartScale (food, el) {
+        clearTimeout(this.time);
+        this.$refs.logoWrapper.style.animation = 'scale .4s';
+				this.$refs.logoWrapper.style.WebkitAnimation = 'scale .4s';
+        this.timer = setTimeout(() => {
+          this.$refs.logoWrapper.style.animation = '';
+				  this.$refs.logoWrapper.style.WebkitAnimation = '';
+        }, 400);
+      },
 			toggleList () {
 				if (!this.totalCount) {
 					return;
@@ -252,7 +263,7 @@
 						});
 					});
 				});
-			}
+      }
 		},
 		components: {
 			Cartball,
@@ -425,15 +436,17 @@
 			opacity: 0
 		&.fade-enter-active, &.fade-leave-active
 			transition: all .4s
-	@keyframes scale
-		0%
-			transform: scale(1.2)
-		25%
-			transform: scale(0.8)
-		50%
-			transform: scale(1.1)
-		75%
-			transform: scale(0.9)
-		100%
-			transform: scale(1)
+</style>
+<style lang="stylus" rel="stylesheet/stylus">
+  @keyframes scale
+    0%
+      transform: scale(1.2)
+    25%
+      transform: scale(0.8)
+    50%
+      transform: scale(1.1)
+    75%
+      transform: scale(0.9)
+    100%
+      transform: scale(1)
 </style>
